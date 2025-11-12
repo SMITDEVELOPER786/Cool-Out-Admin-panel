@@ -1,0 +1,618 @@
+/* ===== Page Layout ===== */
+.admin-affirmations-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 30px;
+  margin-left: 260px;
+  background: #ffffff;
+  font-family: "Poppins", sans-serif;
+  color: #333;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* ===== Form Section ===== */
+.admin-affirmation-card {
+  width: 100%;
+  max-width: 900px;
+  background: #f9f9f9;
+  border-radius: 18px;
+  padding: 35px 45px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  border-top: 6px solid #9ec7c9;
+  margin-bottom: 30px;
+}
+
+.admin-affirmations-title {
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: #9EC7C9;
+  text-align: center;
+  margin-bottom: 25px;
+  width: 100%;
+}
+
+.admin-affirmations-title1 {
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: #9EC7C9;
+  text-align: center;
+  margin-bottom: 25px;
+  width: 100%;
+}
+
+.admin-affirmation-box {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.admin-affirmation-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.admin-affirmation-input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1.5px solid #ddd;
+  font-size: 0.95rem;
+  resize: vertical;
+  min-height: 60px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.admin-affirmation-input:focus {
+  border-color: #9ec7c9;
+  box-shadow: 0 0 0 3px rgba(158, 199, 201, 0.25);
+}
+
+.admin-delete-btn {
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-delete-btn:hover {
+  background-color: #c0392b;
+}
+
+.admin-error-text {
+  color: red;
+  font-size: 0.85rem;
+  margin-top: -10px;
+}
+
+.admin-success-text {
+  color: green;
+  font-size: 0.9rem;
+  margin-top: -10px;
+}
+
+.admin-affirmation-select label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.admin-affirmation-select select {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  border: 1.5px solid #ddd;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.admin-affirmation-select select:focus {
+  border-color: #9ec7c9;
+  box-shadow: 0 0 0 3px rgba(158, 199, 201, 0.25);
+}
+
+.admin-option-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.admin-save-btn {
+  background-color: #9EC7C9;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.25s ease;
+}
+
+.admin-save-btn:hover {
+  background-color: #444;
+}
+
+/* ===== Action Buttons ===== */
+.admin-action-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.admin-add-btn,
+.admin-clear-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+.admin-add-btn {
+  background-color: #9ec7c9;
+  color: #000;
+}
+
+.admin-add-btn:hover {
+  background-color: #8bb5b7;
+}
+
+.admin-clear-btn {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+.admin-clear-btn:hover {
+  background-color: #c0392b;
+}
+
+/* ===== Saved Affirmations Section ===== */
+.admin-saved-questions {
+  width: 100%;
+  max-width: 900px;
+  background: #fff;
+  border-radius: 18px;
+  padding: 35px 40px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+  margin-top: 40px;
+}
+
+.admin-empty-text {
+  text-align: center;
+  color: #777;
+  font-size: 1rem;
+  padding: 20px 0;
+}
+
+/* Saved Grid: 2 per row */
+.admin-saved-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+.admin-saved-card {
+  background: #f9f9f9;
+  border-left: 6px solid #9ec7c9;
+  border-radius: 14px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+
+.admin-saved-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.admin-saved-text {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.admin-saved-category {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+/* Delete button inside saved card */
+.admin-small-delete-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: #8bb5b7;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .admin-affirmations-container {
+    margin-left: 0;
+    padding: 20px 15px;
+    align-items: center;
+  }
+
+  .admin-affirmation-card,
+  .admin-saved-questions {
+    padding: 25px 20px;
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+  }
+
+  .admin-saved-grid {
+    grid-template-columns: 1fr; /* single column on mobile */
+    gap: 18px;
+  }
+
+  .admin-saved-card {
+    padding: 20px;
+    width: 100%;
+  }
+
+  .admin-saved-text {
+    font-size: 0.95rem;
+  }
+
+  .admin-saved-category {
+    font-size: 0.8rem;
+  }
+
+  .admin-option-buttons {
+    justify-content: center;
+  }
+
+  .admin-action-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* FIXED: Center titles properly on mobile */
+  .admin-affirmations-title,
+  .admin-affirmations-title1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #9EC7C9;
+    text-align: center;
+    margin-bottom: 25px;
+    margin-left: 0; /* Remove any left margin */
+    margin-right: 0; /* Remove any right margin */
+    padding: 0 10px; /* Add small padding for edge spacing */
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+.admin-affirmation-input {
+  width: 100%;
+  height: 80px; /* Fixed height */
+  resize: none; /* Prevent manual resizing */
+  padding: 8px;
+  font-size: 16px;
+  padding-top: 16px;
+  line-height: 1.4;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  overflow-y: auto; /* Add vertical scroll if content exceeds height */
+}
+
+.admin-affirmation-input,
+.admin-affirmation-select select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.admin-affirmation-select {
+  margin-top: 10px;
+}
+
+/* Limit the text to 2 lines with ellipsis */
+.admin-saved-text.collapsed {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limits to 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  line-height: 1.4em;
+  max-height: 2.8em; /* 2 lines x line-height */
+}
+
+/* Show full text */
+.admin-saved-text.expanded {
+  display: block;
+  white-space: normal;
+  max-height: none;
+  overflow: visible;
+}
+
+.show-more-less-btn {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  padding: 0;
+  margin: 5px 0 10px;
+  font-size: 0.9em;
+  text-align: left;
+}
+
+.admin-saved-card {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  max-width: 600px; /* Limits width for better readability */
+  word-wrap: break-word; /* Makes long words break to new line */
+  white-space: normal; /* Allows text wrapping */
+}
+
+.affirmation-text {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  text-align: left; /* Align text to left */
+  overflow-wrap: break-word; /* Ensure no overflow with long words */
+}
+
+.show-more-btn {
+  background: none;
+  border: none;
+  color: #9EC7C9 !important;
+  cursor: pointer;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.show-more-btn:hover {
+  text-decoration: underline;
+}
+
+.affirmation-text.collapsed {
+  white-space: nowrap;        /* Single line */
+  overflow: hidden;     
+  white-space: nowrap;        /* Hide overflow */
+  text-overflow: ellipsis;    /* Show ... at the end */
+  max-width: 80%;             /* Leave room for the delete button */
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.admin-saved-text {
+  flex-grow: 1;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px; /* space before delete button */
+}
+
+.admin-saved-text {
+  margin-right: 30px;
+}
+
+.admin-save-btn:hover{
+  background-color: #9EC7C9;
+}
+
+/* ========== Saved Affirmations Text Clamp ========== */
+.admin-saved-text {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 6px;
+  line-height: 1.4;
+  transition: all 0.3s ease;
+}
+
+/* Initially show only 1 line */
+.admin-saved-text.collapsed {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;   /* 👈 only 1 line visible */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Expanded: show full text */
+.admin-saved-text.expanded {
+  display: block;
+}
+
+/* Optional minor styling */
+.admin-saved-category {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.show-more-less-btn {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 0.85rem;
+  cursor: pointer;
+  margin-top: 4px;
+  padding: 0;
+}
+
+.show-more-less-btn:hover {
+  text-decoration: underline;
+}
+
+/* ===== Mobile Responsive for Admin Affirmations ===== */
+@media (max-width: 768px) {
+  .admin-affirmations-container {
+    margin-left: 0;
+    padding: 20px 15px;
+    align-items: center;
+  }
+
+  .admin-affirmation-card,
+  .admin-saved-questions {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+  }
+
+  .admin-affirmation-input {
+    width: 100%;
+    height: 70px;
+    font-size: 0.95rem;
+  }
+
+  .admin-affirmation-select select {
+    font-size: 0.95rem;
+  }
+
+  .admin-option-buttons,
+  .admin-action-buttons {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .admin-save-btn,
+  .admin-add-btn,
+  .admin-clear-btn {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.95rem;
+    padding: 10px 0;
+  }
+
+  .admin-saved-grid {
+    grid-template-columns: 1fr; /* single column */
+    gap: 16px;
+    width: 100%;
+  }
+
+  .admin-saved-card {
+    width: 100% !important;
+  }
+
+  .admin-saved-text {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    margin-bottom: 6px;
+  }
+
+  .admin-saved-category {
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+  }
+
+  .show-more-less-btn {
+    font-size: 0.85rem;
+  }
+
+  .admin-small-delete-btn {
+    top: 10px;
+    right: 10px;
+    padding: 4px 6px;
+  }
+
+  /* FIXED: Ensure titles are perfectly centered */
+  .admin-affirmations-title,
+  .admin-affirmations-title1 {
+    text-align: center;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0 10px;
+    width: 100%;
+  }
+}
+
+.admin-small-delete-btn{
+  margin-right: 20px;
+}
+
+/* Scrollable text area - only 1 line visible */
+.scrollable-quote {
+  margin-top: 28px;
+  max-height: 22px; /* about 1 line */
+  overflow-y: auto;
+  padding-right: 8px;
+  line-height: 1.4;
+}
+
+/* Scrollbar styling */
+.scrollable-quote::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollable-quote::-webkit-scrollbar-thumb {
+  background-color: #9ec7c9;
+  border-radius: 8px;
+}
+
+.scrollable-quote::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+/* Hide scrollbar until hover */
+.scrollable-quote::-webkit-scrollbar {
+  width: 0px;
+}
+
+.scrollable-quote:hover::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Text formatting */
+.admin-saved-text {
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  margin: 0;
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .admin-affirmations-title,
+  .admin-affirmations-title1 {
+    font-size: 1.3rem;
+    padding: 0 5px;
+  }
+  
+  .admin-affirmation-card,
+  .admin-saved-questions {
+    padding: 20px 15px;
+  }
+}

@@ -1,0 +1,342 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  overflow-x: hidden;
+}
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.user-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  /* optional border */
+}
+
+.user-info h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.user-gender {
+  margin: 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+
+.user-container {
+  margin-left: 260px;
+  padding: 40px 30px;
+  background: #fff;
+  min-height: 100vh;
+  font-family: "Poppins", sans-serif;
+  max-width: calc(100% - 260px);
+  box-sizing: border-box;
+}
+
+.back-btn {
+  background-color: #9EC7C9; /* initial black */
+  color: white !important;
+  border: 1px solid;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background-color: #9EC7C9; /* hover color */
+  color: white !important;
+}
+
+.user-title {
+  text-align: center;
+  font-size: 1.9rem;
+  font-weight: 600;
+  margin-bottom: 25px;
+  background: linear-gradient(90deg,#9EC7C9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.user-section {
+  background: #fafbff;
+  border: 1.5px solid #e3e7ef;
+  border-radius: 18px;
+  padding: 30px;
+}
+
+.user-header {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.user-rank {
+  color: #555;
+  font-weight: 500;
+}
+
+.charts-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.chart-box {
+  flex: 1 1 45%;
+  min-width: 200px;
+  height: 250px;
+  max-width: 100%;
+}
+
+.top-mood {
+  text-align: center;
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+.activity-section {
+  margin-top: 50px;
+}
+
+.activity-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.activity-row {
+  margin-bottom: 12px;
+}
+
+.activity-name {
+  text-transform: capitalize;
+}
+
+.activity-mins {
+  font-weight: 500;
+  margin-left: 6px;
+}
+
+.activity-bar-bg {
+  background: #e3e7ef;
+  border-radius: 8px;
+  height: 10px;
+  margin-top: 4px;
+  width: 100%;
+}
+
+.activity-bar-fill {
+  background: #9EC7C9;
+  height: 100%;
+  border-radius: 8px;
+  transition: width 0.4s ease;
+}
+
+.action-plan-section {
+  margin-top: 25px;
+}
+
+.action-plan-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.action-btn {
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.action-btn.completed {
+  background: #9EC7C9;
+  color: #fff;
+  font-weight: 600;
+}
+
+.action-btn.not-completed {
+  background: #e3e7ef;
+  color: #555;
+}
+
+.journal-section {
+  margin-top: 30px;
+  padding: 20px;
+  border: 1.5px solid #e3e7ef;
+  border-radius: 15px;
+  background-color: #fafbff;
+  font-family: "Poppins", sans-serif;
+  transition: all 0.3s ease;
+}
+
+/* Layout for entries */
+.journal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.journal-entry {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px 10px;
+  border-bottom: 1px solid #e3e7ef;
+  background-color: white;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.journal-entry:hover {
+  background-color: #f1f5f9;
+  transform: translateY(-2px);
+}
+
+.journal-date {
+  font-weight: 600;
+  width: 100px;
+  font-size: 0.95rem;
+  color: #334155;
+}
+
+.journal-emoji {
+  font-size: 1.5rem;
+  width: 40px;
+  text-align: center;
+}
+
+.journal-content {
+  flex: 1;
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.4;
+}
+
+/* ---------------- RESPONSIVE DESIGN ---------------- */
+
+/* Tablets (up to 768px) */
+@media (max-width: 768px) {
+ .chart-box{
+  padding-top: 20px;
+ }
+  .journal-section {
+    padding: 20px;
+  }
+
+  .journal-entry {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .journal-date {
+    width: auto;
+    font-size: 0.9rem;
+  }
+
+  .journal-emoji {
+    width: 30px;
+    font-size: 1.3rem;
+  }
+
+  .journal-content {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile (up to 480px) */
+@media (max-width: 480px) {
+  .journal-section {
+    padding: 12px;
+  }
+  .user-container {
+    margin-left: -5px;
+max-width: 100%;
+  }
+
+  .journal-entry {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .journal-date {
+    font-size: 0.85rem;
+   
+  }
+
+  .journal-content {
+    font-size: 0.85rem;
+  }
+}
+:root {
+  --main-color: #9EC7C9;
+}
+
+.chart-box h4 {
+  color: #334155;
+  margin-bottom: 6px;
+ padding-top: -60px;
+}
+
+.top-mood {
+  margin-top: 6px;
+  font-weight: 500;
+  color: var(--main-color);
+}
+
+.activity-bar-fill {
+  transition: width 0.4s ease;
+  border-radius: 5px;
+  
+}
+
+.action-btn {
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+
+
+
+
+
+
+.backbtn {
+  background-color: #9EC7C9;
+  color: white !important;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+/* Make all text black EXCEPT back button */
+.user-container *:not(.backbtn):not(.backbtn *) {
+  color: #000000 !important;
+}
+
+.activity-section *:not(.backbtn):not(.backbtn *) {
+  color: #000000 !important;
+}

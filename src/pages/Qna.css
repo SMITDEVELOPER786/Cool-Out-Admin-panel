@@ -1,0 +1,279 @@
+/* ===== Page Layout ===== */
+.qna-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 30px;
+  margin-left: 260px;
+  background: #ffffff;
+  font-family: "Poppins", sans-serif;
+  color: #333;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* ===== Header ===== */
+.qna-title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #9EC7C9;
+  margin-bottom: 30px;
+}
+
+/* ===== Question Form Card ===== */
+.qna-card {
+  width: 100%;
+  max-width: 900px;
+  background: #f9f9f9;
+  border-radius: 18px;
+  padding: 35px 45px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  border-top: 6px solid #9ec7c9;
+  margin-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ===== Question Header (input + trash) ===== */
+.qna-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.qna-input {
+  flex: 1;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  border: 1.5px solid #ddd;
+  border-radius: 10px;
+  outline: none;
+  transition: all 0.3s ease;
+  background-color: #fff;
+}
+
+.qna-input:focus {
+  border-color: #9ec7c9;
+  box-shadow: 0 0 0 3px rgba(158, 199, 201, 0.25);
+}
+
+/* ===== Trash/Delete Button ===== */
+.btn-delete {
+  background-color: #9ec7c9;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+
+
+/* ===== Option Fields ===== */
+.qna-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ===== Add & Save Buttons ===== */
+.btn-add,
+.btn-save {
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: #9ec7c9;
+  color: #fff;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-right: 10px;
+}
+
+.btn-add:hover,
+.btn-save:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+/* ===== Answer Type Dropdown Section ===== */
+.qna-multiple-select {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f9fafb;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.qna-multiple-select:hover {
+  background: #f3f4f6;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.qna-multiple-select label {
+  font-weight: 600;
+  font-size: 13px;
+  min-width: 100px;
+}
+
+/* ===== Saved Questions List ===== */
+.saved-questions {
+  width: 100%;
+  max-width: 900px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 30px 40px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+  margin-bottom: 80px;
+}
+
+.saved-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.saved-item {
+  background-color: #f1f5fb;
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: background 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.saved-item:hover {
+  background-color: #e4ebf5;
+}
+
+.saved-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.saved-item strong {
+  color: #333;
+  margin-bottom: 5px;
+  line-height: 1.4;
+  display: block;
+}
+
+.saved-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #555;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+
+.saved-option input[type="radio"],
+.saved-option input[type="checkbox"] {
+  accent-color: #9ec7c9;
+  transform: scale(1.2);
+ margin-bottom: 10px;
+}
+
+.saved-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #555;
+  font-size: 0.95rem;
+  margin-bottom: 8px; /* Add margin to the entire option instead */
+}
+
+.saved-option input[type="radio"],
+.saved-option input[type="checkbox"] {
+  accent-color: #9ec7c9;
+  transform: scale(1.2);
+  margin-bottom: 0; /* REMOVE this margin-bottom */
+  margin-top: 0; /* Ensure no top margin either */
+}
+
+.saved-option:last-child {
+  margin-bottom: 0; /* Remove margin from last option */
+}
+
+.no-data{
+   text-align: center;
+  color: #777;
+  font-size: 1rem;
+  padding: 20px 0;
+}
+/* ===== Responsive ===== */
+@media (max-width: 992px) {
+  .qna-container {
+    margin-left: -10px;
+    padding: 25px;
+  }
+
+  .qna-card,
+  .saved-questions {
+    padding: 25px;
+  }
+}
+
+@media (max-width: 600px) {
+  .btn-add,
+  .btn-save {
+    width: 100%;
+    margin-bottom: 10px;
+    align-self: center;
+  }
+
+  .qna-option {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .qna-multiple-select {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+.success-message {
+  margin-top: 10px;
+  padding: 8px 12px;
+  
+  color: #000000;
+  border-radius: 5px;
+  font-weight: 500;
+  text-align: center;
+}
+.inline-message {
+  margin-top: 10px;
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.inline-message.success {
+
+  color: #9EC7C9;
+}
+
+.inline-message.error {
+   /* red for errors */
+  color: #f28b82;
+}

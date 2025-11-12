@@ -1,0 +1,429 @@
+/* ===== Page Layout ===== */
+.activityPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 30px;
+  margin-left: 260px;
+  background: #ffffff;
+  font-family: "Poppins", sans-serif;
+  color: #333;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* ===== Form Section ===== */
+.activityFormSection {
+  width: 100%;
+  max-width: 900px;
+  background: #f9f9f9;
+  border-radius: 18px;
+  padding: 35px 45px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  border-top: 6px solid #9ec7c9;
+  margin-bottom: 50px;
+}
+
+.activityFormSection h2 {
+  text-align: center;
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 25px;
+}
+
+/* Form Inputs Grid */
+.activityFormSection form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px 24px;
+}
+
+.savebtn1 {
+  background-color: #c2dabe;
+  color: white;
+  margin-top: 3px;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.savebtn2 {
+  background-color: #bccfd5;
+  color: white;
+  margin-top: 3px;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #222;
+}
+
+input[type="text"],
+input[type="color"],
+select {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.3s ease;
+  background-color: white;
+}
+
+input[type="text"]:focus,
+select:focus {
+  border-color: #9ec7c9;
+  box-shadow: 0 0 0 3px rgba(158, 199, 201, 0.25);
+}
+
+/* Multi Dropdown */
+.dropdown-multi {
+  height: 42px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+}
+
+/* Buttons */
+button {
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.small-btn {
+  margin-top: 8px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  background-color: #9ec7c9;
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.small-btn:hover {
+  background-color: #8bb5b7;
+}
+
+.save-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  background-color: #9ec7c9 !important;
+  border: none;
+  padding: 10px 16px;
+  color: white !important;
+  border-radius: 8px;
+  font-weight: 500;
+  margin: 5px auto;
+  transition: all 0.25s ease;
+  grid-column: 1 / -1;
+  margin-top: 20px;
+}
+
+.save-btn:hover {
+  background-color: #8bb5b7 !important;
+  
+}
+
+.submit {
+  color: black;
+}
+
+/* ===== Saved Activities ===== */
+.activityListSection {
+  width: 100%;
+  max-width: 900px;
+  background: #fff;
+  border-radius: 18px;
+  padding: 35px 40px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+  margin-bottom: 80px;
+}
+
+.activityListSection h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: #8bb5b7;
+}
+
+.noDataText {
+  text-align: center;
+  color: #777;
+  font-size: 1rem;
+  padding: 20px 0;
+}
+
+/* Activity Grid & Cards */
+.activityGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+.activityCard {
+  background: #fff;
+  border-left: 6px solid #9ec7c9;
+  border-radius: 14px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: auto;
+}
+
+.activityCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.activityTitle {
+  margin: 0 0 12px;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.benefitsList {
+  list-style: disc inside;
+  padding-left: 0;
+  margin: 0 0 20px;
+}
+
+.benefitsList li {
+  padding: 4px 0;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* ===== Buttons Group (Your Requested Styles - KEPT) ===== */
+.buttonsGroup {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.buttonsGroup .button {
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.buttonsGroup .button.start {
+  background-color: #bccfd5;
+  color: #2c3e50;
+ 
+}
+
+.buttonsGroup .button.start:hover {
+  opacity: 0.9;
+}
+
+.buttonsGroup .button.edit {
+  background-color: #baf1f1;
+ color: #2c3e50;
+}
+
+
+.savebtn1{
+  margin-right: 10px;
+}
+.buttonsGroup .button.delete {
+  background-color: #9EC7C9;
+  border: #d1e9dc 1px solid;
+   color: #2c3e50;
+}
+
+.buttonsGroup .button.delete:hover {
+  background-color:#aebdcd; /* Muted, serious grey */
+  border-color: #9EC7C9; /* Darker grey border */
+  color:white; /* White text for clarity */
+}
+
+/* Option Buttons */
+.optionButton {
+  background-color: #9ec7c9;
+  border: none;
+  padding: 10px 16px;
+  color: white;
+  border-radius: 8px;
+  font-weight: 500;
+  margin: 5px;
+  transition: all 0.25s ease;
+}
+
+.optionButton:hover {
+  background-color: #8bb5b7;
+}
+
+/* ===== Modal Styling ===== */
+.modalBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal {
+  background: #fff;
+  padding: 30px;
+  border-radius: 14px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.confirmBtn {
+  background-color: #9ec7c9;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 500;
+  margin: 8px;
+
+}
+
+.cancelBtn {
+  background-color: #eee;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 500;
+  color: #333;
+  margin: 8px;
+}
+
+.cancelBtn:hover {
+  background-color: #ddd;
+}
+
+/* === Benefits & Questions block spacing fix === */
+.benefitsBlock input,
+.questionsBlock input {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.benefitsBlock .small-btn,
+.questionsBlock .small-btn {
+  margin-top: 5px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .activityPage {
+    margin-left: 0;
+    padding: 20px 15px;
+  }
+
+  .activityFormSection,
+  .activityListSection {
+    padding: 25px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .activityFormSection form {
+    grid-template-columns: 1fr;
+    gap: 12px 0;
+  }
+
+  .activityGrid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .activityCard {
+    padding: 20px;
+  }
+
+  .activityTitle {
+    font-size: 1.2rem;
+  }
+
+  .benefitsList li {
+    font-size: 0.9rem;
+  }
+
+  .buttonsGroup {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .buttonsGroup .button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .optionButton {
+    width: 100%;
+    margin: 5px 0;
+  }
+}
+.colorPickerWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.colorOption {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%; /* circle */
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.colorOption:hover {
+  transform: scale(1.1);
+}
+
+.colorOption.active {
+  border-color: #9EC7C9; /* highlight selected color */
+  box-shadow: 0 0 0 3px rgba(158, 199, 201, 0.3);
+}

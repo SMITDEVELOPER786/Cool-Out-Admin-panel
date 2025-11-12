@@ -1,0 +1,270 @@
+/* ===== Full Post Details Page ===== */
+.post-details-container {
+  margin-left: 260px;
+  padding: 30px 40px;
+  font-family: "Poppins", sans-serif;
+  min-height: 100vh;
+  background: #fafbff;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 6px 12px;
+  color: #111 !important;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: background 0.2s ease;
+}
+
+.back-btn:hover {
+  background: #f5f5f5;
+  color: #111;
+}
+
+/* Full Post Card */
+.full-post-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  margin-bottom: 25px;
+  max-width: 800px;
+  margin-inline: auto;
+}
+
+.full-post-image {
+  width: 100%;
+  height: auto;
+  max-height: 600px;
+  display: block;
+  object-fit: contain;
+  border-bottom: 1px solid #eee;
+  background: #f9fafc;
+  border-radius: 0;
+}
+
+.full-post-image.small {
+  max-height: 350px;
+  object-fit: cover;
+}
+
+.full-post-content {
+  padding: 16px 20px;
+}
+
+.full-post-content h2 {
+  font-size: 1.2rem;
+  color: #111;
+  margin-bottom: 6px;
+}
+
+.full-post-content p {
+  font-size: 1rem;
+  color: #374151;
+  margin-bottom: 10px;
+}
+
+.full-post-stats {
+  display: flex;
+  gap: 15px;
+  font-size: 0.95rem;
+  color: #555;
+  margin-top: 10px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* No Image Post */
+.full-post-card.no-image .full-post-content {
+  padding: 40px 30px;
+  text-align: left;
+}
+
+.full-post-card.no-image h2 {
+  margin-top: 0;
+  font-size: 1.3rem;
+  color: #111;
+}
+
+.full-post-card.no-image p {
+  margin-top: 10px;
+  line-height: 1.6;
+  color: #444;
+}
+
+/* Comments Section */
+.comments-list {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 800px;
+  margin-inline: auto;
+  margin-bottom: 40px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+}
+
+.comments-list h3 {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  color: #111;
+}
+
+.comment-item {
+  border-bottom: 1px solid #f1f1f1;
+  padding: 10px 0;
+}
+
+.comment-item:last-child {
+  border-bottom: none;
+}
+
+.comment-item strong {
+  color: #000;
+  font-weight: 600;
+}
+
+.comment-item p {
+  color: #444;
+  margin-top: 3px;
+  font-size: 0.95rem;
+}
+
+.no-comments {
+  color: #666;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Likes Popup */
+.likes-popup {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 800px;
+  margin-inline: auto;
+  margin-bottom: 25px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+  animation: fadeIn 0.3s ease;
+}
+
+.likes-popup h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #111;
+}
+
+.like-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.like-item:last-child {
+  border-bottom: none;
+}
+
+.like-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.like-item span {
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.no-likes {
+  color: #666;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.clickable {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.clickable:hover {
+  opacity: 0.8;
+}
+/* Force all text in post details to be black */
+.post-details-container
+{
+  color: #000000 !important;
+}
+
+/* Specific overrides for better control */
+
+
+
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .post-details-container {
+    margin-left: 0;
+    padding: 20px;
+  }
+
+  .full-post-card,
+  .comments-list,
+  .likes-popup {
+    max-width: 100%;
+  }
+
+  .full-post-image {
+    max-height: 400px;
+  }
+
+  .full-post-content h2 {
+    font-size: 1.05rem;
+  }
+
+  .full-post-content p,
+  .comment-item p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .post-details-container {
+    padding: 16px;
+  }
+
+  .full-post-image {
+    max-height: 300px;
+  }
+
+  .back-btn {
+    font-size: 0.85rem;
+    padding: 5px 10px;
+  }
+}

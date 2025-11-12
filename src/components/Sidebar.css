@@ -1,0 +1,67 @@
+/* Sidebar1.css */
+.layout {
+  display: flex;
+  height: 100vh;
+}
+
+/* Desktop sidebar */
+.sidebar {
+  width: 220px;
+  background: #9EC7C9; /* theme color */
+  color: rgb(255, 255, 255);
+  padding: 20px;
+  transition: all 0.3s ease;
+  z-index: 100;
+  box-sizing: border-box;
+}
+
+.sidebar h2 {
+  margin-bottom: 20px;
+  color: white;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  padding: 10px 0;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+}
+
+.sidebar li:hover {
+  background: #7fb3b0; /* darker shade for hover */
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  transition: filter 0.3s ease;
+  box-sizing: border-box;
+}
+
+/* ---------- Mobile overlay ---------- */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;    /* overlay on content */
+    top: 0;
+    left: -100%;        /* hidden by default */
+    width: 220px;
+    height: 100%;
+    padding: 20px;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.3);
+    background: #9EC7C9; /* theme color */
+  }
+
+  .sidebar.open {
+    left: 0;            /* slide in */
+  }
+
+  .content.dim {
+    filter: brightness(0.5); /* dim content when sidebar open */
+    pointer-events: none;     /* prevent clicks */
+  }
+}

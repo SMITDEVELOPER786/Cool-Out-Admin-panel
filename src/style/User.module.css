@@ -1,0 +1,40 @@
+.usersContainer {
+  padding: 20px;
+}
+
+.usersContainer h2 {
+  margin-bottom: 20px;
+}
+
+.userTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.userTable th,
+.userTable td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+.userTable th {
+  background-color: #9EC7C9; /* theme color */
+  color: white;
+}
+
+.editBtn {
+  background-color: #9EC7C9; /* theme color */
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.editBtn:hover {
+  background-color: #7fb3b0; /* slightly darker for hover */
+}

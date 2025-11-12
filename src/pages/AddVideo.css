@@ -1,0 +1,842 @@
+/* ---------- Layout ---------- */
+.add-video-container {
+  margin-left: 260px;
+  padding: 50px 30px;
+  min-height: 100vh;
+  background-color: white;
+  font-family: "Poppins", sans-serif;
+  transition: all 0.3s ease;
+  max-width: calc(100% - 260px);
+  box-sizing: border-box;
+  position: relative;
+  z-index: 0;
+  overflow-y: hidden;
+}
+
+.add-video-card {
+  max-width: 880px;
+  background: #ffffff;
+  margin: 0 auto 60px;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.07);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+  border: 1px solid #f3f4f6;
+  border-top: 6px solid #9EC7C9;
+}
+
+.add-video-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* ---------- Headings ---------- */
+.add-video-title {
+  text-align: center;
+  color: #1f2937;
+  font-size: 1.9rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 25px;
+  background: #9EC7C9;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---------- Input & Buttons ---------- */
+.section-input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 35px;
+  flex-wrap: wrap;
+}
+
+.section-input input {
+  width: 45%;
+  min-width: 150px;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: border 0.3s ease;
+  background-color: #f9fafb;
+}
+
+.section-input input:focus {
+  border-color: #9EC7C9;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+}
+
+.section-input button {
+  background: #9EC7C9;
+  color: white;
+  padding: 11px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.section-input button:hover {
+  transform: translateY(-1px);
+}
+
+/* ---------- Section Boxes ---------- */
+.section-box {
+  border: 1.5px solid #e3e7ef;
+  border-radius: 18px;
+  padding: 30px;
+  margin-bottom: 45px;
+  background-color: #fafbff;
+  transition: all 0.3s ease;
+}
+
+.section-box:hover {
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* ---------- Section Header ---------- */
+.section-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.section-header h2 {
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.rename-input {
+  flex: 1 1 auto;
+  min-width: 150px;
+  padding: 8px 10px;
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #f9fafb;
+}
+
+.rename-input:focus {
+  border-color: #a7e6ee;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+}
+
+.rename-btn {
+  background: #9EC7C9;
+  color: #fff;
+  padding: 7px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.rename-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* ---------- Video Row ---------- */
+.video-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr auto;
+  gap: 12px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.video-row input {
+  padding: 9px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border 0.3s ease;
+  background-color: #f9fafb;
+}
+
+.video-row input:focus {
+  border-color: #9EC7C9;
+}
+
+/* ---------- Buttons ---------- */
+.add-btn {
+  background: linear-gradient(90deg, #9EC7C9, #a1e0e2);
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  margin-top: 12px;
+}
+
+.add-btn:hover {
+  transform: translateY(-1px);
+}
+
+.delete-btn {
+ background: white;
+border:#f5f5f5 1px solid ; 
+color:#c3f1f5;
+  
+  padding: 5px 10px;
+ 
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 10px auto;
+}
+
+.delete-btn1 {
+   background: white;
+border:#a7e6ee 1px solid ; 
+color:#5d6d72;
+ font-weight: 200;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 18px !important;
+
+}
+
+/* ---------- Action Buttons ---------- */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 35px;
+  flex-wrap: wrap;
+}
+
+.submit-btn {
+  color: white;
+  background-color: #8bb6b8;
+  padding: 13px 28px;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  border: none;
+  box-shadow: 0 2px 8px rgba(139, 182, 184, 0.3);
+}
+
+.savebtn1{
+  background-color: #c2dabe;
+  color: white;
+  margin-top: 3px;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.savebtn2{
+  background-color: #bccfd5;
+  color: white;
+  margin-top: 3px;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.delete-all-btn {
+  
+   background: white;
+border:#628082 1px solid ; 
+color:#628082;
+  
+  padding: 13px 28px;
+/* border: #eaa3b5 1px solid ; */
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+
+
+
+/* ---------- Video Preview ---------- */
+.video-preview {
+  margin-top: 10px;
+  width: 100%;
+  height: 250px;
+}
+
+.video-preview iframe {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+}
+
+/* ---------- Group spacing ---------- */
+.section-group {
+  margin-bottom: 80px;
+}
+
+/* ---------- Saved Sections ---------- */
+.saved-sections {
+  max-width: 880px;
+  margin: 40px auto 60px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  border-top: 6px solid #9EC7C9;
+  box-sizing: border-box;
+}
+
+.saved-sections h2 {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* ---------- Tables ---------- */
+/* ---------- Tables ---------- */
+.saved-table,
+.saved-table1 {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  table-layout: fixed;
+}
+
+.saved-table th,
+.saved-table td,
+.saved-table1 th,
+.saved-table1 td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+  color: #1f2937;
+}
+
+.saved-table th,
+.saved-table1 th {
+  background-color: #9EC7C9;
+  color: white;
+  font-weight: 500;
+}
+
+/* ---------- View Button - White Text ---------- */
+.view-btn {
+  padding: 8px 16px;
+  background: #9EC7C9;
+  color: #ffffff !important;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.view-btn:hover {
+  background: #8bb6b8;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+}
+
+/* ---------- Delete Button - White Icon ---------- */
+.delete-btn1 {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  margin: 0 auto;
+  background-color: #9EC7C9 !important;
+ 
+  color: #ffffff !important; /* Clean white for best readability */
+}
+
+
+
+/* ---------- Modal ---------- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-height: 80vh;
+  overflow-y: auto;
+  width: 80%;
+}
+
+.close-btn {
+  margin-top: 20px;
+  padding: 8px 15px;
+  background: #c7fbff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+/* ===== Responsive Styles ===== */
+
+/* ===== Mobile (max-width: 600px) ===== */
+@media (max-width: 600px) {
+  .add-video-container {
+    margin-left: 0;
+    padding: 15px 12px;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .add-video-card,
+  .saved-sections,
+  .section-box {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 0 25px 0;
+    padding: 18px 15px;
+    border-radius: 12px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+  }
+
+  .add-video-title {
+    font-size: 1.25rem;
+    text-align: center;
+    margin-bottom: 18px;
+  }
+
+  .section-input {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .section-input input,
+  .section-input button {
+    width: 100%;
+    padding: 12px;
+    font-size: 0.95rem;
+    border-radius: 10px;
+    box-sizing: border-box;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .rename-input {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+
+  .video-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .video-row input {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+
+  .add-btn,
+  .delete-btn,
+  .submit-btn,
+  .delete-all-btn,
+  .rename-btn,
+  .save-btn {
+    width: 100%;
+    text-align: center;
+    padding: 12px 0;
+    font-size: 0.95rem;
+    margin-top: 8px;
+    border-radius: 10px;
+  }
+
+  .video-preview {
+    height: 160px;
+  }
+
+  /* ===== FIXED TABLE STYLES ===== */
+  .saved-table,
+  .saved-table1 {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    font-size: 0.85rem; /* Better base font size */
+  }
+
+  .saved-table1 th,
+  .saved-table1 td {
+    padding: 12px 8px; /* More padding for better touch targets */
+    font-size: 0.85rem; /* Readable font size */
+    min-width: 80px; /* Minimum column width */
+    white-space: normal; /* Allow text wrapping */
+    line-height: 1.3; /* Better line spacing */
+  }
+
+  /* Make table headers more prominent */
+  .saved-table1 th {
+    font-size: 0.9rem;
+    padding: 14px 8px;
+  }
+
+  /* Better button styles for mobile */
+  .view-btn {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+    min-width: 60px;
+    white-space: nowrap;
+  }
+
+  .delete-btn1 {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+    min-width: 60px;
+    white-space: nowrap;
+  }
+}
+
+/* ===== Very Small Screens (max-width: 480px) ===== */
+@media (max-width: 480px) {
+  .saved-table1 th,
+  .saved-table1 td {
+    font-size: 0.8rem; /* Keep readable font size */
+    padding: 10px 6px; /* Maintain good padding */
+    min-width: 70px; /* Slightly smaller minimum width */
+  }
+
+  .saved-table1 th {
+    font-size: 0.85rem;
+    padding: 12px 6px;
+  }
+
+  .view-btn,
+  .delete-btn1 {
+    padding: 8px 10px;
+    font-size: 0.75rem;
+    min-width: 55px;
+  }
+
+  .saved-sections {
+    padding: 10px 8px;
+  }
+}
+
+/* ===== Extra Small Screens (max-width: 360px) ===== */
+@media (max-width: 360px) {
+  .saved-table1 th,
+  .saved-table1 td {
+    font-size: 0.75rem;
+    padding: 8px 4px;
+    min-width: 60px;
+  }
+
+  .saved-table1 th {
+    font-size: 0.8rem;
+  }
+
+  .view-btn,
+  .delete-btn1 {
+    padding: 6px 8px;
+    font-size: 0.7rem;
+    min-width: 50px;
+  }
+}
+
+/* ===== Alternative: Card-based Layout for Very Small Screens ===== */
+/*  */
+
+
+/* ===== Alternative: Card-based Layout for Very Small Screens ===== */
+@media (max-width: 400px) {
+  /* Optional: Convert table to cards on very small screens */
+  .saved-table1 {
+    display: block;
+  }
+  
+  .saved-table1 thead {
+    display: none; /* Hide headers on very small screens */
+  }
+  
+  .saved-table1 tbody,
+  .saved-table1 tr {
+    display: block;
+  }
+  
+  .saved-table1 tr {
+    margin-bottom: 15px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px;
+    background: white;
+  }
+  
+  .saved-table1 td {
+    display: block;
+    text-align: left;
+    padding: 8px 0;
+    border: none;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  
+  /* FIXED: Center the delete button properly */
+  .saved-table1 td:last-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-bottom: none;
+    padding: 15px 0 5px 0;
+  }
+
+  .saved-table1 td::before {
+    content: attr(data-label) ": ";
+    font-weight: 600;
+    color: #374151;
+    display: inline-block;
+    min-width: 80px;
+  }
+  
+  /* Hide data-label for action cells */
+  .saved-table1 td[data-label="Delete"]::before {
+    content: "";
+    display: none;
+  }
+
+  .saved-table1 td[data-label="Delete"] .delete-btn1 {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    color: #628082 !important;
+    border: #628082 1px solid !important;
+    background-color: white !important;
+    font-weight: 500;
+    margin: 0 auto;
+    display: block;
+  }
+}
+
+/* ===== View Button - Blue Background ===== */
+.view-btn {
+  padding: 8px 16px;
+  background: #9EC7C9 !important; /* Blue background */
+  color: #ffffff !important; /* White text */
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.view-btn:hover {
+  background: #8bb6b8 !important; /* Darker blue on hover */
+  color: #ffffff !important;
+  transform: translateY(-1px);
+}
+
+/* ===== Delete Button - White Background ===== */
+.delete-btn1 {
+  padding: 8px 16px; /* Same padding as view button */
+  background: white !important; /* White background */
+  border: #628082 1px solid !important; /* Border color */
+  color: #628082 !important; /* Text color */
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.delete-btn1:hover {
+  background: #f8f9fa !important; /* Light gray on hover */
+  border-color: #5d6d72 !important;
+  color: #5d6d72 !important;
+  transform: translateY(-1px);
+}
+
+
+/* ---------- 📱 Mobile Responsive Styles ---------- */
+@media (max-width: 1024px) {
+  .add-video-container {
+    margin-left: 0;
+    padding: 20px;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .add-video-card {
+    padding: 25px 20px;
+    margin-bottom: 40px;
+  }
+
+  .section-input {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+
+  .section-input input {
+    width: 100%;
+  }
+
+  .section-input button {
+    width: 100%;
+  }
+
+  .section-box {
+    padding: 20px;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .rename-input {
+    width: 100%;
+  }
+
+  .video-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .video-row input[type="text"],
+  .video-row input[type="file"] {
+    width: 100%;
+  }
+
+  .delete-btn1,
+  .add-btn,
+  .submit-btn,
+  .delete-all-btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+  }
+
+  .saved-sections {
+    overflow-x: auto;
+  }
+
+  .saved-table1 {
+    width: 100%;
+    border-collapse: collapse;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .saved-table1 th,
+  .saved-table1 td {
+    padding: 8px 12px;
+    text-align: left;
+    font-size: 0.9rem;
+  }
+
+  .modal-box {
+    width: 90%;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .add-video-title {
+    font-size: 1.5rem;
+  }
+
+  .section-input input {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+
+  .video-row input {
+    font-size: 0.9rem;
+  }
+
+  .add-btn,
+  .submit-btn,
+  .delete-all-btn {
+    font-size: 0.9rem;
+  }
+}
+ /* 🔧 Fix weird ":" issue on mobile cards */
+.saved-table1 td::before {
+  content: attr(data-label);
+  font-weight: 600;
+  color: #374151;
+  display: inline-block;
+  min-width: 80px;
+  margin-right: 5px;
+}
+
+/* 🧹 Hide ::before when data-label is empty or missing */
+.saved-table1 td:not([data-label])::before,
+.saved-table1 td[data-label=""]::before {
+  content: "";
+  display: none;
+}
+/* ✅ Mobile Fix */
+@media (max-width: 600px) {
+  .saved-table1 td.action-buttons-cell {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+
+  .saved-table1 .view-btn,
+  .saved-table1 .delete-btn1 {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+}

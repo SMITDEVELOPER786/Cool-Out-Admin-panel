@@ -1,0 +1,231 @@
+:root {
+  --primary: #7fc8a9;
+  --primary-dark: #6bb091;
+  --bg-light: #f8fafb;
+  --text-dark: #2e2e2e;
+  --border: #e4e7eb;
+  --radius: 14px;
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* ------------ FORM CONTAINER ------------ */
+.activity-form {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 36px 42px;
+  box-shadow: var(--shadow);
+  border-top: 6px solid var(--primary);
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  transition: 0.3s ease;
+}
+
+.activity-form:hover {
+  transform: translateY(-3px);
+}
+
+.activity-form h2 {
+  font-size: 1.8rem;
+  color: var(--text-dark);
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+/* ------------ INPUTS ------------ */
+.activity-form label {
+  display: block;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+
+.activity-form input,
+.activity-form select,
+.activity-form textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg-light);
+  font-size: 15px;
+  margin-bottom: 18px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.activity-form input:focus,
+.activity-form select:focus,
+.activity-form textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(127, 200, 169, 0.25);
+  outline: none;
+}
+
+/* ------------ DROPDOWN ------------ */
+.activity-form select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,<svg width='14' height='10' viewBox='0 0 14 10' xmlns='http://www.w3.org/2000/svg'><path fill='%237fc8a9' d='M7 10L0.937822 0.25L13.0622 0.25L7 10Z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 14px;
+}
+
+/* ------------ BUTTON ------------ */
+.activity-form button {
+  width: 100%;
+  padding: 14px 0;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.activity-form button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
+/* ------------ RESPONSIVE ------------ */
+@media (max-width: 600px) {
+  .activity-form {
+    padding: 24px;
+  }
+
+  .activity-form h2 {
+    font-size: 1.5rem;
+  }
+}
+.activity-form {
+  background: #fff;
+  border: 2px solid;
+  border-radius: 16px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+  max-width: 900px;
+  margin: auto;
+}
+
+h2 {
+  font-size: 1.4rem;
+  color: #333;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+input[type="text"],
+select {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.color-picker {
+  width: 50px;
+  height: 35px;
+  border: none;
+  cursor: pointer;
+}
+
+.small-btn {
+  background: #9ec7c9;
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.small-btn:hover {
+  opacity: 0.9;
+}
+
+.dropdownContainer {
+  position: relative;
+}
+
+.dropdownButton {
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #f9f9f9;
+  cursor: pointer;
+}
+
+.dropdownList {
+  position: absolute;
+  top: 105%;
+  left: 0;
+  width: 100%;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  list-style: none;
+  padding: 6px 0;
+  margin: 0;
+  z-index: 10;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.dropdownList li {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.dropdownList li:hover,
+.dropdownList li.selected {
+  background: #e7f5f5;
+}
+
+.questionBlock {
+  background: #fafafa;
+  border-left: 5px solid;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.optionRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.previewInputRadio,
+.previewInputCheckbox {
+  transform: scale(1.2);
+  cursor: default;
+}
+
+.save-btn {
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #9ec7c9, #7cb4b6);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.save-btn:hover {
+  opacity: 0.9;
+}
