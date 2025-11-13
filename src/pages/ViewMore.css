@@ -1,12 +1,17 @@
 .viewmore-container {
-  max-width: 900px;
-  margin: 40px auto;
+  max-width: 900px;       /* زیادہ سے زیادہ چوڑائی */
+  width: 90%;             /* flexible width smaller screens کے لیے */
+  margin: 40px auto;      /* top-bottom 40px, left-right auto → center horizontally */
   background: #ffffff;
   border-radius: 16px;
   padding: 30px;
+  margin-left: 340px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box; /* padding کو width میں include کرے */
 }
 
+
+/* Page Title */
 .viewmore-title {
   text-align: center;
   font-size: 26px;
@@ -14,13 +19,40 @@
   margin-bottom: 30px;
   color: #333;
 }
+.back-btn {
+  display: inline-flex;      /* flex اور inline-flex دونوں safe ہیں */
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 16px;
+  
+  color: black;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #9EC7C9;
+  cursor: pointer;
+  text-decoration: none;
+  z-index: 10;  
+               /* make sure it's above other elements */
+               margin-left: 240px;
+               margin-top: -10px;
+}
 
+.back-btn:hover {
+  background: #e0f0f5;
+}
+
+
+/* List of Assessments */
 .viewmore-list {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
+/* Each Assessment Card */
 .viewmore-card {
   border: 1px solid #eee;
   border-radius: 12px;
@@ -34,6 +66,7 @@
   background: #f0f8ff;
 }
 
+/* Question Text */
 .question {
   font-size: 18px;
   font-weight: 500;
@@ -41,6 +74,7 @@
   color: #222;
 }
 
+/* Options List (if needed) */
 .options {
   list-style: none;
   padding: 0;
@@ -62,14 +96,17 @@
 
 .option.selected span {
   font-weight: 600;
-  color:#2b6669;
+  color: #2b6669;
 }
 
+/* Empty State */
 .viewmore-empty {
   text-align: center;
   color: #777;
+  font-size: 16px;
 }
 
+/* Loader */
 .viewmore-loader {
   display: flex;
   flex-direction: column;
@@ -77,4 +114,57 @@
   justify-content: center;
   height: 80vh;
   color: #444;
+  font-size: 16px;
 }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .viewmore-container {
+    padding: 20px;
+    margin-left: 34px !important;
+  }
+
+  .viewmore-title {
+    font-size: 22px;
+  }
+
+  .question {
+    font-size: 16px;
+  }
+
+  .option {
+    font-size: 14px;
+  }
+  .back-btn{
+    margin-left: 10px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .viewmore-container {
+    padding: 16px;
+    margin-left: 14px !important;
+    margin: 20px auto;
+  }
+
+  .viewmore-title {
+    font-size: 20px;
+  }
+
+  .question {
+    font-size: 15px;
+  }
+
+  .option {
+    font-size: 13px;
+  }
+
+  .back-btn {
+    font-size: 14px;
+    padding: 6px 10px;
+    margin-left: 10px !important;
+  }
+}
+
+
+
