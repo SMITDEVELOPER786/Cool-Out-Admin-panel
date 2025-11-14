@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./UserDetails.css";
 import { FaArrowLeft } from "react-icons/fa";
-import { defaultTeamData } from "../pages/GetAllUsers";
+import defaultTeamData  from "../pages/GetAllUsers";
 
 import { Bar, Pie } from "react-chartjs-2";
 import {
