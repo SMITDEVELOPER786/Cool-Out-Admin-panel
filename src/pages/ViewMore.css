@@ -1,15 +1,13 @@
 .viewmore-container {
-  max-width: 900px;       /* زیادہ سے زیادہ چوڑائی */
-  width: 90%;             /* flexible width smaller screens کے لیے */
-  margin: 40px auto;      /* top-bottom 40px, left-right auto → center horizontally */
+  margin-left: 260px;
+  padding: 40px 30px;
+  max-width: calc(100% - 260px);
+  min-height: 100vh;
   background: #ffffff;
   border-radius: 16px;
-  padding: 30px;
-  margin-left: 340px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box; /* padding کو width میں include کرے */
+  box-sizing: border-box;
 }
-
 
 /* Page Title */
 .viewmore-title {
@@ -19,12 +17,12 @@
   margin-bottom: 30px;
   color: #333;
 }
+
 .back-btn {
-  display: inline-flex;      /* flex اور inline-flex دونوں safe ہیں */
+  display: inline-flex;
   align-items: center;
   gap: 6px;
   margin-bottom: 16px;
-  
   color: black;
   font-weight: 500;
   font-size: 16px;
@@ -34,16 +32,16 @@
   background: #9EC7C9;
   cursor: pointer;
   text-decoration: none;
-  z-index: 10;  
-               /* make sure it's above other elements */
-               margin-left: 240px;
-               margin-top: -10px;
+  margin-left: 0;
+  margin-top: 0;
+  position: relative;
+  z-index: 10;
 }
 
 .back-btn:hover {
-  background: #e0f0f5;
+ background: #4d7c7e;
+  color: rgb(255, 255, 255)!important;
 }
-
 
 /* List of Assessments */
 .viewmore-list {
@@ -59,6 +57,8 @@
   padding: 20px;
   background: #fafafa;
   transition: 0.3s;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .viewmore-card:hover {
@@ -72,9 +72,23 @@
   font-weight: 500;
   margin-bottom: 10px;
   color: #222;
+  word-wrap: break-word;
 }
 
-/* Options List (if needed) */
+/* Answer Text - ADD THIS RULE */
+.viewmore-card p {
+  color: #000000; /* Black color for answer text */
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Make the <b> tag inside answer also black */
+.viewmore-card p b {
+  color: #000000; /* Black color for bold text too */
+}
+
+/* Options List */
 .options {
   list-style: none;
   padding: 0;
@@ -117,54 +131,123 @@
   font-size: 16px;
 }
 
-/* Responsive */
+/* Tablet */
+@media (max-width: 1024px) {
+  .viewmore-container {
+    margin-left: 240px;
+    max-width: calc(100% - 240px);
+    padding: 30px 20px;
+  }
+}
+
+/* Mobile - when sidebar becomes overlay */
 @media (max-width: 768px) {
   .viewmore-container {
+    margin: 20px auto !important;
     padding: 20px;
-    margin-left: 34px !important;
+    width: calc(100% - 40px); /* Proper padding on both sides */
+    max-width: calc(100% - 40px);
+    margin-left: auto !important;
+    margin-right: auto !important;
+    border-radius: 12px;
   }
 
   .viewmore-title {
     font-size: 22px;
+    margin-bottom: 20px;
   }
 
   .question {
     font-size: 16px;
   }
 
+  .viewmore-card p {
+    font-size: 14px;
+  }
+
   .option {
     font-size: 14px;
   }
-  .back-btn{
-    margin-left: 10px !important;
+  
+  .back-btn {
+    margin-left: 0 !important;
+    margin-bottom: 10px;
+  }
+  
+  .viewmore-card {
+    padding: 15px;
+  }
+  
+  .viewmore-list {
+    gap: 15px;
   }
 }
 
+/* Small Mobile */
 @media (max-width: 480px) {
   .viewmore-container {
+    margin: 15px auto !important;
     padding: 16px;
-    margin-left: 14px !important;
-    margin: 20px auto;
+    width: calc(100% - 32px); /* 16px padding on each side */
+    max-width: calc(100% - 32px);
+    border-radius: 10px;
   }
 
   .viewmore-title {
     font-size: 20px;
+    margin-bottom: 15px;
   }
 
   .question {
     font-size: 15px;
   }
 
+  .viewmore-card p {
+    font-size: 13px;
+  }
+
   .option {
     font-size: 13px;
+    gap: 8px;
   }
 
   .back-btn {
     font-size: 14px;
     padding: 6px 10px;
-    margin-left: 10px !important;
+    margin-left: 0 !important;
+  }
+  
+  .viewmore-card {
+    padding: 12px;
+  }
+  
+  .viewmore-list {
+    gap: 12px;
   }
 }
 
+/* Very small screens */
+@media (max-width: 360px) {
+  .viewmore-container {
+    padding: 12px;
+    margin: 10px auto !important;
+    width: calc(100% - 24px);
+    max-width: calc(100% - 24px);
+  }
+  
+  .viewmore-title {
+    font-size: 18px;
+  }
+  
+  .question {
+    font-size: 14px;
+  }
 
-
+  .viewmore-card p {
+    font-size: 12px;
+  }
+  
+  .viewmore-card {
+    padding: 10px;
+  }
+}

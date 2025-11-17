@@ -52,7 +52,7 @@ function Team() {
     const parts = text.split(regex);
     return parts.map((part, i) =>
       regex.test(part) ? (
-        <span key={i} style={{ backgroundColor: "#ffeaa7" }}>
+        <span key={i} >
           {part}
         </span>
       ) : (
@@ -61,25 +61,28 @@ function Team() {
     );
   };
 
-  // Filter users
-  const filteredTeam = teamData.filter((member) => {
-    const searchMatch =
-      (member.username?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
-      (member.email?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
-      (member.location?.toLowerCase() || "").includes(searchTerm.toLowerCase());
+ // Filter users - CORRECTED VERSION
+const filteredTeam = teamData.filter((member) => {
+  const searchMatch =
+    (member.username?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+    (member.email?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+    (member.location?.toLowerCase() || "").includes(searchTerm.toLowerCase());
 
-    const userStatus = (member.status || "").toString().trim().toLowerCase();
-    const filterStatus = (selectedStatus || "").toString().trim().toLowerCase();
-    const statusMatch = filterStatus === "" || userStatus === filterStatus;
+  // FIXED: Better status filtering
+  const userStatus = (member.status || "Active").toString().trim().toLowerCase();
+  const filterStatus = selectedStatus.trim().toLowerCase();
+  
+  // If no status filter selected, show all. Otherwise match exactly
+  const statusMatch = selectedStatus === "" || userStatus === filterStatus;
 
-    const dateMatch =
-      !selectedDate ||
-      (member.dateJoined &&
-        member.dateJoined === selectedDate.toLocaleDateString("en-CA"));
+  // FIXED: Better date handling
+  const dateMatch =
+    !selectedDate ||
+    (member.dateJoined &&
+      member.dateJoined === selectedDate.toISOString().split('T')[0]); // Use YYYY-MM-DD format
 
-    return searchMatch && statusMatch && dateMatch;
-  });
-
+  return searchMatch && statusMatch && dateMatch;
+});
   // Pagination
   const totalPages = Math.ceil(filteredTeam.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -137,7 +140,7 @@ function Team() {
       <div className="main-content">
         <div className="team-page">
           <div className="page-header">
-            <h2 className="page-titlees" style={{ color: "#9EC7C9", fontSize: "30px" }}>
+            <h2 className="page-titlees">
               Users
             </h2>
           </div>
@@ -148,7 +151,7 @@ function Team() {
               <div className="reports-search-input-wrapper">
                 <input
                   type="text"
-                  placeholder="Search by Name, Email or Location"
+                  placeholder="Search Users..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="reports-search-input"
@@ -232,44 +235,40 @@ function Team() {
                           </span>
                         </td>
                         <td>{highlightText(member.location || "-", searchTerm)}</td>
-                        <td className="team-actions">
-                          <div className="team-action-menu">
-                            <button
-                              className="team-action-btn"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setMenuOpen(menuOpen === member.id ? null : member.id);
-                              }}
-                            >
-                              <MoreHorizontal size={16} />
-                            </button>
+<td className="team-actions">
+  <div className="team-action-menu">
+    <button
+      className="team-action-btn"
+      onClick={(e) => {
+        e.stopPropagation();
+        setMenuOpen(menuOpen === member.id ? null : member.id);
+      }}
+    >
+      <MoreHorizontal size={16} />
+    </button>
 
-                            {menuOpen === member.id && (
-                              <div
-                                className={`team-dropdown-menu ${
-                                  index >= currentTeam.length - 2 ? "drop-up" : ""
-                                }`}
-                              >
-                                <button onClick={() => { setViewMember(member); setMenuOpen(null); }}>
-                                  <Eye size={14} /> View Profile
-                                </button>
-                                <button
-                                  onClick={() =>
-                                    navigate(`/users/ViewMore/${member.id}`, { state: { user: member } })
-                                  }
-                                >
-                                  <Eye size={14} /> View More
-                                </button>
-                                <button onClick={() => { setEditMember(member); setMenuOpen(null); }}>
-                                  <Edit size={14} /> Edit
-                                </button>
-                                <button onClick={() => setConfirmDelete(member)}>
-                                  <Trash2 size={14} /> Remove
-                                </button>
-                              </div>
-                            )}
-                          </div>
-                        </td>
+    {menuOpen === member.id && (
+      <div className="team-dropdown-menu">
+        <button onClick={() => { setViewMember(member); setMenuOpen(null); }}>
+          <Eye size={14} /> View Profile
+        </button>
+        <button
+          onClick={() =>
+            navigate(`/users/ViewMore/${member.id}`, { state: { user: member } })
+          }
+        >
+          <Eye size={14} /> View More
+        </button>
+        <button onClick={() => { setEditMember(member); setMenuOpen(null); }}>
+          <Edit size={14} /> Edit
+        </button>
+        <button onClick={() => setConfirmDelete(member)}>
+          <Trash2 size={14} /> Remove
+        </button>
+      </div>
+    )}
+  </div>
+</td>
                       </tr>
                     );
                   })}

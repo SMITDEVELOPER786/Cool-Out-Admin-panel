@@ -25,7 +25,7 @@
 .page-titlees {
   font-size: 24px;
   font-weight: 700;
-  color: #0f172a;
+  color: #9EC7C9;
 }
 
 .sub-titlees {
@@ -64,21 +64,23 @@
   height: 40px;
   font-size: 14px;
   background: transparent;
-  color: #000000; /* Black text */
+  color: #000000;
 }
 
 .filter-controls {
   display: flex;
   gap: 12px;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 /* ===== Table Styles ===== */
 .table-container {
-  overflow-x: auto;
+  overflow: visible; /* Changed from overflow-x: auto */
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  position: relative; /* Added for better dropdown positioning */
 }
 
 .team-table {
@@ -92,7 +94,7 @@
   border-bottom: 1px solid #e2e8f0;
   text-align: left;
   font-size: 14px;
-  color: #000000 !important; /* Black text */
+  color: #000000 !important;
 }
 
 .team-table th {
@@ -107,13 +109,6 @@
   gap: 10px;
 }
 
-/* Current size */
-.user-avatar {
-  width: 50px !important;
-  height: 50px !important;
-}
-
-/* Make it smaller */
 .user-avatar {
   width: 40px !important;
   height: 40px !important;
@@ -123,7 +118,7 @@
 
 .user-name {
   font-weight: 500;
-  color: #000000 !important; /* Black text */
+  color: #000000 !important;
 }
 
 /* ===== Status Badges ===== */
@@ -138,41 +133,118 @@
 .status-active {
   background: #6db2b5;
   color: #ffffff;
-  font-weight:500;
+  font-weight: 500;
+}
+
+/* GetAllusers.css */
+/* ===== Base Styles ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ===== Team Page Layout ===== */
+.team-page {
+  margin-left: 260px;
+  padding: 40px 30px;
+  max-width: calc(100% - 260px);
+  min-height: 100vh;
+  background: #ffffff;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+/* ===== Status Badges ===== */
+.status-badge {
+
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+   background: #6db2b5;
+  color: #ffffff;
+  width: 100px;
+  font-weight: 500;
+  text-align: center;
+}
+
+
+.status-withdraw {
+  
+  color: #be185d;
+  background: white;
+  border: #be185d solid 1px;
 }
 
 .status-pending {
-  background:#ffffff ;
+  background: #ffffff;
   color: #6db2b5;
   border: #6db2b5 solid 1px;
 }
 
-.status-withdraw {
-  background: #fce7f3;
-  color: #be185d;
-}
 
 /* ===== Actions & Dropdown ===== */
 .team-actions {
   position: relative;
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+.team-action-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 12.8px;
+  border-radius: 6px;
+  transition: background 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 !important;
+}
+
+.team-action-btn:hover {
+  background: #f1f5f9;
+}
 .team-dropdown-menu {
   position: absolute;
   right: 0;
-  top: 100%;
+  top: 20;
   background: #fff;
   border: 1px solid #e2e8f0;
   border-radius: 6px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
   min-width: 150px;
   z-index: 1000;
+}
+
+.team-dropdown-menu button {
+  background: transparent;
+  border: none;
+  padding: 10px 15px;
+  text-align: left;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.team-dropdown-menu button:hover {
+  background: #f1f5f9;
 }
 
 .team-dropdown-menu.drop-up {
   top: auto;
   bottom: 100%;
+  margin-top: 0;
+  margin-bottom: 6px;
 }
 
 /* ===== Pagination ===== */
@@ -210,52 +282,6 @@
   align-items: center;
   z-index: 999;
 }
-/* ==== FIX ONLY EDIT MODAL INPUT & DROPDOWN ==== */
-.modal-box .edit-input {
-  width: 100%;
-  margin-bottom: 12px; /* Only spacing fix */
-  padding: 10px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 14px;
-  background: #fff;
-}
-
-/* Default dropdown arrow color: #9EC7C9 */
-.modal-box select.edit-input {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  cursor: pointer;
-
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239EC7C9' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 16px;
-  padding-right: 35px; /* Arrow ke liye jagah */
-}
-
-
-/* Ensure dropdown stays inside modal */
-.modal-box {
-  overflow: visible !important;
-  position: relative !important;
-  z-index: 9999 !important;
-}
-
-/* ===== Make default dropdown arrow GREEN inside modal ===== */
-.modal-box select.edit-input {
-  appearance: none; 
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  cursor: pointer;
-
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2300b894' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 16px;
-  padding-right: 35px; /* arrow ke liye space */
-}
 
 .modal-box {
   background: white;
@@ -264,6 +290,38 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   max-width: 420px;
   width: 90%;
+  overflow: visible !important;
+  position: relative !important;
+  z-index: 9999 !important;
+}
+
+.modal-box.left-aligned-modal {
+  text-align: left;
+  padding: 24px;
+  color: #000000 !important;
+}
+
+/* Modal inputs */
+.modal-box .edit-input {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  background: #fff;
+}
+
+.modal-box select.edit-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2300b894' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 35px;
 }
 
 /* Status Filter Dropdown */
@@ -273,91 +331,26 @@
 }
 
 .kyc-status-select {
-  padding: 8px 28px 8px 10px; /* Right padding for arrow space */
+  padding: 8px 28px 8px 10px;
   border: 1px solid #d1d5db;
   border-radius: 6px;
   font-size: 14px;
-  appearance: none; /* Remove default arrow */
+  appearance: none;
   background: #fff;
-  width: 100%; /* Ensure it takes full width */
-  min-width: 140px; /* Minimum width */
+  width: 100%;
+  min-width: 140px;
 }
 
 .kyc-select-icon {
   position: absolute;
-  right: 10px; /* Adjust this value */
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  pointer-events: none; /* Allow clicks to pass through to select */
+  pointer-events: none;
   color: #64748b;
 }
 
-/* Ensure the container has proper spacing */
-.filter-controls {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  flex-wrap: wrap; /* Allow wrapping on small screens */
-}
-
-.team-action-btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 5px;
-  border-radius: 6px;
-  transition: background 0.3s;
-}
-
-.team-action-btn:hover {
-  background: #f1f5f9;
-}
-
-.team-dropdown-menu {
-  position: absolute;
-  right: 0;
-  top: 100%;
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-  min-width: 150px;
-  z-index: 10;
-}
-
-.team-dropdown-menu button {
-  background: transparent;
-  border: none;
-  padding: 10px 15px;
-  text-align: left;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.team-dropdown-menu button:hover {
-  background: #f1f5f9;
-}
-
-.team-dropdown-menu.drop-up {
-  top: auto;
-  bottom: 100%;
-  margin-top: 0;
-  margin-bottom: 6px;
-}
-
-/* Left Aligned Modal */
-.modal-box.left-aligned-modal {
-  text-align: left;
-  padding: 24px;
-  color: #000000 !important; /* Force black text */
-}
-
+/* Profile styles */
 .profile-header {
   display: flex;
   align-items: center;
@@ -378,13 +371,13 @@
 .profile-header h3 {
   font-size: 18px;
   font-weight: 600;
-  color: #000000 !important; /* Black name */
+  color: #000000 !important;
   margin: 0;
 }
 
 .profile-header .gender {
   font-size: 14px;
-  color: #000000 !important; /* Black gender */
+  color: #000000 !important;
   margin-top: 4px;
 }
 
@@ -395,21 +388,14 @@
 .profile-details p {
   font-size: 14px;
   margin: 6px 0;
-  color: #000000 !important; /* Black details text */
-}
-
-.profile-details b {
-  color: #000000 !important; /* Black bold labels */
-}
-
-/* Ensure all modal text is black */
-.modal-box h3,
-.modal-box p,
-.modal-box .profile-header,
-.modal-box .profile-details {
   color: #000000 !important;
 }
 
+.profile-details b {
+  color: #000000 !important;
+}
+
+/* Buttons */
 .team-close-btn {
   padding: 8px 14px;
   border: none;
@@ -418,8 +404,6 @@
   background: #6db2b5;
   color: #ffffff;
   font-size: 14px;
-
-  /* Add border for better visibility */
 }
 
 .team-close-btn:focus {
@@ -427,7 +411,7 @@
   box-shadow: 0 0 0 2px rgba(109, 178, 181, 0.5)
 }
 
-.savebtn1{
+.savebtn1 {
   background-color: #c2dabe;
   color: white;
   margin-top: 3px;
@@ -435,7 +419,7 @@
   border-radius: 8px;
 }
 
-.savebtn2{
+.savebtn2 {
   background-color: #bccfd5;
   color: white;
   margin-top: 3px;
@@ -443,21 +427,37 @@
   border-radius: 8px;
 }
 
+/* Search wrapper */
+.reports-search-input-wrapper {
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+ 
+  background: #ffffff;
+  width: 350px;
+}
 
-/* For mobile responsiveness */
-@media (max-width: 768px) {
-  .kyc-status-filter {
-    width: 100%; /* Full width on mobile */
-    padding-right: 8px;
-  }
-  
-  .kyc-status-select {
-    width: 100%;
-  }
-  
-  .filter-controls {
-    gap: 8px;
-  }
+.reports-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  height: 42px;
+  font-size: 14px;
+  background: transparent;
+  color: #000;
+  padding-left: 5px;
+  min-width: 220px;
+}
+
+/* Table alignment */
+.saved-table1 td,
+.saved-table1 th {
+  vertical-align: middle;
+}
+
+.saved-table1 td:nth-child(5) {
+  padding-top: 0px !important;
+  padding-bottom: 0 !important;
 }
 
 /* ===== Animations ===== */
@@ -497,6 +497,19 @@
     align-items: stretch;
   }
   
+  input[type="date"] {
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+  
+  .filter-controls > * {
+    flex: 1 1 100%;
+  }
+  
+  .filter-controls {
+    gap: 10px;
+  }
+  
   .team-table thead {
     display: none;
   }
@@ -521,7 +534,7 @@
     flex-direction: column;
     align-items: flex-start;
     padding: 6px 0;
-    color: #000000 !important; /* Black text on mobile */
+    color: #000000 !important;
   }
   
   .team-table td::before {
@@ -535,87 +548,32 @@
     max-width: 90%;
     padding: 16px;
   }
-}
-
-@media (max-width: 768px) {
-  /* Fix date input full width */
-  input[type="date"] {
-    width: 100% !important;
-    box-sizing: border-box;
-   
+  
+  .kyc-status-filter {
+    width: 100%;
+    padding-right: 8px;
   }
-
-  /* Ensure equal spacing for all filter fields */
-  .filter-controls > * {
-    flex: 1 1 100%;
-  }
-
-  /* Optional: Add some breathing space between inputs */
-  .filter-controls {
-    gap: 10px;
+  
+  .kyc-status-select {
+    width: 100%;
   }
 }
-.reports-search-input-wrapper {
-  display: flex;
-  align-items: center;
-  border-radius: 10px;
-  padding: 0 14px;
-  background: #ffffff; /* ✅ light background for visibility */
-  width: 350px; /* ✅ Fixed width (adjust as needed) */
-}
 
-.reports-search-input {
-  flex: 1;
-  border: none;
-  outline: none;
-  height: 42px;
-  font-size: 14px;
-  background: transparent;
-  color: #000;
-  padding-left: 5px; /* ✅ Prevent text clipping */
-  min-width: 220px; /* ✅ Avoid cutting placeholder */
-}
-.saved-table1 td,
-.saved-table1 th {
-  vertical-align: middle; /* ✅ Row ke beech me align */
-}
-
-.team-actions {
-  display: flex;
-  justify-content: center;
-  align-items: center; /* ✅ Center vertically */
-}
-
-.team-action-btn {
-  margin: 0 !important; /* ✅ Neeche shift hatao */
-  padding: 12.8px; /* ✅ Equal size look */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.saved-table1 td:nth-child(5) {
-  padding-top: 0px !important;
-  padding-bottom: 0 !important;
-}
-
-/* ✅ FINAL RESPONSIVE FIX — Mobile < 600px */
+/* Small Mobile */
 @media (max-width: 600px) {
-
-  /* ✅ Page layout */
   .team-page {
     margin-left: 0 !important;
     padding: 15px !important;
   }
 
-  /* ✅ Reduce heading size */
   .page-titlees {
     font-size: 18px !important;
   }
+  
   .sub-titlees {
     font-size: 14px !important;
   }
 
-  /* ✅ Filter section full width & smaller */
   .filters-container {
     flex-direction: column !important;
     width: 100% !important;
@@ -632,7 +590,6 @@
     font-size: 13px !important;
   }
 
-  /* ✅ Table fully mobile card style */
   .team-table thead {
     display: none !important;
   }
@@ -665,22 +622,20 @@
     font-size: 12px !important;
   }
 
-  /* ✅ Avatar small on mobile */
   .user-avatar {
     width: 34px !important;
     height: 34px !important;
   }
+  
   .user-name {
     font-size: 13px !important;
   }
 
-  /* ✅ Status badge smaller */
   .status-badge {
     padding: 3px 10px !important;
     font-size: 11px !important;
   }
 
-  /* ✅ Action menu center */
   .team-actions {
     justify-content: flex-start !important;
   }
@@ -689,7 +644,6 @@
     padding: 7px !important;
   }
 
-  /* ✅ Pagination buttons spacing */
   .table-footer {
     flex-direction: column !important;
     gap: 8px !important;
@@ -700,7 +654,6 @@
     justify-content: center !important;
   }
 
-  /* ✅ Modal mobile fix */
   .modal-box {
     width: 95% !important;
     padding: 18px !important;
@@ -710,4 +663,19 @@
     width: 55px !important;
     height: 55px !important;
   }
+}
+
+
+/* Small Mobile */
+@media (max-width: 600px) {
+
+
+  /* UPDATE THIS - Even smaller padding for very small screens */
+  .status-active {
+    padding: 3px 10px !important;   /* Even smaller padding */
+    font-size: 10px !important;    /* Smaller font */
+    min-width: 60px;              /* Smaller minimum width */
+  }
+
+  
 }

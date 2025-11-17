@@ -59,17 +59,8 @@ const ViewMore = () => {
 
   return (
     <div className="viewmore-container">
-      <button
-        className="back-btn"
-        onClick={() => navigate(-1)}
-        style={{
-          marginBottom: "16px",
-          display: "flex",
-          alignItems: "center",
-          color: "black",
-          gap: "6px",
-        }}
-      >
+      {/* REMOVED INLINE STYLES - using CSS class only */}
+      <button className="back-btn" onClick={() => navigate(-1)}>
         <ArrowLeft size={16} /> Back to Users
       </button>
 
