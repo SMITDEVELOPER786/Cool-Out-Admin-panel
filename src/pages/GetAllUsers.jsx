@@ -31,25 +31,47 @@ function Team() {
   const itemsPerPage = 10;
 
   // Fetch users from Firebase
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        setLoading(true);
-        const querySnapshot = await getDocs(collection(db, "users"));
-        const usersList = querySnapshot.docs
-          .map((doc) => ({ id: doc.id, ...doc.data() }))
-          .reverse();
-        
-        console.log("Fetched users:", usersList);
-        setTeamData(usersList);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUsers();
-  }, []);
+  // Fetch users from Firebase
+useEffect(() => {
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      const querySnapshot = await getDocs(collection(db, "users"));
+      const usersList = querySnapshot.docs
+        .map((doc) => { 
+          const userData = doc.data();
+          
+          // Convert createdAt timestamp to dateJoined string
+          let dateJoined = "-";
+          if (userData.createdAt) {
+            // If createdAt is a Firebase timestamp
+            if (userData.createdAt.toDate) {
+              dateJoined = userData.createdAt.toDate().toISOString().split('T')[0];
+            } 
+            // If createdAt is already a string
+            else if (typeof userData.createdAt === 'string') {
+              dateJoined = userData.createdAt.split('T')[0];
+            }
+          }
+          
+          return { 
+            id: doc.id, 
+            ...userData,
+            dateJoined: dateJoined // Add the formatted date
+          };
+        })
+        .reverse();
+      
+      console.log("Fetched users:", usersList);
+      setTeamData(usersList);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchUsers();
+}, []);
 
   // ✅ Get user avatar with default fallback
   
@@ -111,24 +133,25 @@ const generateAvatarFromLetter = (letter) => {
   };
 
   // Filter users
-  const filteredTeam = teamData.filter((member) => {
-    const searchMatch =
-      (member.username?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
-      (member.email?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
-      (member.location?.toLowerCase() || "").includes(searchTerm.toLowerCase());
+ // Filter users
+const filteredTeam = teamData.filter((member) => {
+  const searchMatch =
+    (member.username?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+    (member.email?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+    (member.location?.toLowerCase() || "").includes(searchTerm.toLowerCase());
 
-    const userStatus = (member.status || "Active").toString().trim().toLowerCase();
-    const filterStatus = selectedStatus.trim().toLowerCase();
-    
-    const statusMatch = selectedStatus === "" || userStatus === filterStatus;
+  const userStatus = (member.status || "Active").toString().trim().toLowerCase();
+  const filterStatus = selectedStatus.trim().toLowerCase();
+  
+  const statusMatch = selectedStatus === "" || userStatus === filterStatus;
 
-    const dateMatch =
-      !selectedDate ||
-      (member.dateJoined &&
-        member.dateJoined === selectedDate.toISOString().split('T')[0]);
+  const dateMatch =
+    !selectedDate ||
+    (member.dateJoined &&
+      member.dateJoined === selectedDate.toISOString().split('T')[0]);
 
-    return searchMatch && statusMatch && dateMatch;
-  });
+  return searchMatch && statusMatch && dateMatch;
+});
 
   // Pagination
   const totalPages = Math.ceil(filteredTeam.length / itemsPerPage);
@@ -313,7 +336,7 @@ const generateAvatarFromLetter = (letter) => {
                           {highlightText(member.dateJoined || "-", searchTerm)}
                         </td>
                         <td data-label="Status">
-                          <span className={`status-badge ${getStatusClass(member.status)}`}>
+                          <span className={`status-badge status-active ${getStatusClass(member.status)}`}>
                             {member.status || "Active"}
                           </span>
                         </td>

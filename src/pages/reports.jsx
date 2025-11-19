@@ -1,19 +1,73 @@
-// reports.jsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { db } from '../firebase';
+import { collection, getDocs, doc, deleteDoc, updateDoc } from 'firebase/firestore';
 import './reports.css';
 
 const Reports = () => {
-  const reportedUsers = [
-    { id: 1, username: 'user123', reason: 'Spam', reportedBy: 'admin01', date: '2025-10-30' },
-    { id: 2, username: 'trollking', reason: 'Harassment', reportedBy: 'user456', date: '2025-10-29' },
-    { id: 3, username: 'bot_account', reason: 'Suspicious Activity', reportedBy: 'moderator2', date: '2025-10-28' },
-  ];
+  const [reports, setReports] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('all'); // 'all', 'users', 'posts'
 
-  const reportedPosts = [
-    { id: 101, postId: 'P-8841', contentPreview: 'Click this link to win $1000!', reason: 'Scam Link', reportedBy: 'user789', date: '2025-10-31' },
-    { id: 102, postId: 'P-7723', contentPreview: 'You are ugly and stupid.', reason: 'Hate Speech', reportedBy: 'user222', date: '2025-10-30' },
-    { id: 103, postId: 'P-6690', contentPreview: '[Image of violence]', reason: 'Graphic Content', reportedBy: 'moderator1', date: '2025-10-29' },
-  ];
+  // Fetch reports from Firebase
+  useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'reports'));
+        const reportsData = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setReports(reportsData);
+      } catch (error) {
+        console.error('Error fetching reports:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReports();
+  }, []);
+
+  // Handle dismiss report
+  const handleDismiss = async (reportId) => {
+    try {
+      await deleteDoc(doc(db, 'reports', reportId));
+      setReports(prev => prev.filter(report => report.id !== reportId));
+    } catch (error) {
+      console.error('Error dismissing report:', error);
+    }
+  };
+
+  // Handle resolve report (mark as resolved)
+  const handleResolve = async (reportId) => {
+    try {
+      await updateDoc(doc(db, 'reports', reportId), {
+        status: 'resolved',
+        resolvedAt: new Date().toISOString()
+      });
+      setReports(prev => prev.map(report => 
+        report.id === reportId ? { ...report, status: 'resolved' } : report
+      ));
+    } catch (error) {
+      console.error('Error resolving report:', error);
+    }
+  };
+
+  // Filter reports based on active tab
+  const filteredReports = reports.filter(report => {
+    if (activeTab === 'all') return true;
+    if (activeTab === 'users') return report.type === 'user';
+    if (activeTab === 'posts') return report.type === 'post';
+    return true;
+  });
+
+  if (loading) {
+    return (
+      <div className="reports-page">
+        <div className="loading">Loading reports...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="reports-page">
@@ -22,65 +76,121 @@ const Reports = () => {
         <p>Review and manage reported users and posts</p>
       </header>
 
-      {/* Reported Users */}
-      <section className="report-card">
-        <div className="card-header">
-          <h2>Reported Users</h2>
-          <span className="count-badge">{reportedUsers.length}</span>
-        </div>
-        <div className="card-body">
-          {reportedUsers.map((user) => (
-            <div key={user.id} className="report-item">
-              <div className="item-main">
-                <div className="user-info">
-                  <strong>#{user.id} • {user.username}</strong>
-                  <span className="reported-by">by {user.reportedBy}</span>
-                </div>
-                <span className={`tag ${user.reason.toLowerCase().replace(' ', '-')}`}>
-                  {user.reason}
-                </span>
-              </div>
-              <div className="item-meta">
-                <span className="date">{user.date}</span>
-                <div className="actions">
-                  <button className="btn-outline">Review</button>
-                  <button className="btn-ghost">Dismiss</button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* Tabs */}
+      <div className="reports-tabs">
+        <button 
+          className={`tab ${activeTab === 'all' ? 'active' : ''}`}
+          onClick={() => setActiveTab('all')}
+        >
+          All Reports ({reports.length})
+        </button>
+        <button 
+          className={`tab ${activeTab === 'users' ? 'active' : ''}`}
+          onClick={() => setActiveTab('users')}
+        >
+          User Reports ({reports.filter(r => r.type === 'user').length})
+        </button>
+        <button 
+          className={`tab ${activeTab === 'posts' ? 'active' : ''}`}
+          onClick={() => setActiveTab('posts')}
+        >
+          Post Reports ({reports.filter(r => r.type === 'post').length})
+        </button>
+      </div>
 
-      {/* Reported Posts */}
+      {/* Reports List */}
       <section className="report-card">
         <div className="card-header">
-          <h2>Reported Posts</h2>
-          <span className="count-badge">{reportedPosts.length}</span>
+          <h2>
+            {activeTab === 'all' && 'All Reports'}
+            {activeTab === 'users' && 'Reported Users'}
+            {activeTab === 'posts' && 'Reported Posts'}
+          </h2>
+          <span className="count-badge">{filteredReports.length}</span>
         </div>
+
         <div className="card-body">
-          {reportedPosts.map((post) => (
-            <div key={post.id} className="report-item">
-              <div className="item-main">
-                <div className="post-info">
-                  <strong>{post.postId}</strong>
-                  <p className="preview">{post.contentPreview}</p>
-                  <span className="reported-by">by {post.reportedBy}</span>
-                </div>
-                <span className={`tag ${post.reason.toLowerCase().replace(' ', '-')}`}>
-                  {post.reason}
-                </span>
-              </div>
-              <div className="item-meta">
-                <span className="date">{post.date}</span>
-                <div className="actions">
-                  <button className="btn-primary">View</button>
-                  <button className="btn-danger">Delete</button>
-                  <button className="btn-ghost">Dismiss</button>
-                </div>
-              </div>
+          {filteredReports.length === 0 ? (
+            <div className="no-reports">
+              <p>No reports found</p>
             </div>
-          ))}
+          ) : (
+            filteredReports.map((report) => (
+              <div key={report.id} className="report-item">
+                <div className="item-main">
+                  <div className="report-info">
+                    <div className="report-header">
+                      <strong>
+                        {report.type === 'user' ? '👤 User Report' : '📝 Post Report'}
+                      </strong>
+                      <span className={`status ${report.status || 'pending'}`}>
+                        {report.status || 'Pending'}
+                      </span>
+                    </div>
+                    
+                    <div className="report-details">
+                      {report.type === 'user' && (
+                        <>
+                          <p><strong>Username:</strong> {report.reportedUsername || 'Unknown'}</p>
+                          <p><strong>User ID:</strong> {report.reportedUserId}</p>
+                        </>
+                      )}
+                      {report.type === 'post' && (
+                        <>
+                          <p><strong>Post ID:</strong> {report.postId}</p>
+                          <p><strong>Content:</strong> {report.postContent || 'No content preview'}</p>
+                        </>
+                      )}
+                      <p><strong>Reason:</strong> {report.reason}</p>
+                      <p><strong>Description:</strong> {report.description || 'No additional details'}</p>
+                    </div>
+
+                    <div className="reporter-info">
+                      <span className="reported-by">
+                        Reported by: {report.reporterUsername || report.reporterId} • {report.createdAt ? new Date(report.createdAt).toLocaleDateString() : 'Unknown date'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="item-meta">
+                  <div className="actions">
+                    {report.type === 'post' && (
+                      <button 
+                        className="btn-primary"
+                        onClick={() => window.open(`/posts/${report.postId}`, '_blank')}
+                      >
+                        View Post
+                      </button>
+                    )}
+                    {report.type === 'user' && (
+                      <button 
+                        className="btn-primary"
+                        onClick={() => window.open(`/users/${report.reportedUserId}`, '_blank')}
+                      >
+                        View User
+                      </button>
+                    )}
+                    
+                    <button 
+                      className="btn-success"
+                      onClick={() => handleResolve(report.id)}
+                      disabled={report.status === 'resolved'}
+                    >
+                      {report.status === 'resolved' ? 'Resolved' : 'Mark Resolved'}
+                    </button>
+                    
+                    <button 
+                      className="btn-danger"
+                      onClick={() => handleDismiss(report.id)}
+                    >
+                      Dismiss
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </section>
 
