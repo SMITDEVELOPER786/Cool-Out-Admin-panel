@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaPlus, FaHeart, FaComment, FaTrash, FaEye } from "react-icons/fa";
+import { FaPlus, FaHeart, FaComment, FaTrash, FaEye, FaRegHeart, FaRegComment, FaTimes } from "react-icons/fa";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "../pages/GetAllPost.css";
 import { db } from "../firebase";
@@ -10,29 +10,96 @@ import { CLOUDINARY } from "../CloudinaryConfig";
 const GetAllPosts = () => {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
+  const [users, setUsers] = useState({});
   const [search, setSearch] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(null);
-  const [newUser, setNewUser] = useState("");
   const [newContent, setNewContent] = useState("");
   const [newImage, setNewImage] = useState(null);
   const [message, setMessage] = useState(null);
   const [formError, setFormError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedImage, setSelectedImage] = useState(null); // For image modal
   const itemsPerPage = 9;
 
-  // ✅ Fetch posts from Firestore on load
+  // ✅ Fetch posts AND users from Firestore
   useEffect(() => {
-    const fetchPosts = async () => {
-      const querySnapshot = await getDocs(collection(db, "posts"));
-      const postsData = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setPosts(postsData.sort((a, b) => b.createdAt - a.createdAt));
+    const fetchData = async () => {
+      try {
+        const postsSnapshot = await getDocs(collection(db, "posts"));
+        const postsData = postsSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        const usersSnapshot = await getDocs(collection(db, "users"));
+        const usersData = {};
+        usersSnapshot.docs.forEach((doc) => {
+          usersData[doc.id] = doc.data();
+        });
+
+        setUsers(usersData);
+        setPosts(postsData.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
-    fetchPosts();
+
+    fetchData();
   }, []);
+
+  // ✅ Generate avatar with first letter and random color
+  const generateAvatarFromLetter = (letter) => {
+    const colors = [
+      '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
+      '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9',
+      '#F8C471', '#82E0AA', '#F1948A', '#85C1E9', '#D7BDE2'
+    ];
+    
+    const colorIndex = letter.charCodeAt(0) % colors.length;
+    const backgroundColor = colors[colorIndex];
+    
+    const svg = `
+      <svg width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+        <rect width="40" height="40" fill="${backgroundColor}" rx="8"/>
+        <text x="20" y="26" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold">${letter}</text>
+      </svg>
+    `;
+    
+    return `data:image/svg+xml;base64,${btoa(svg)}`;
+  };
+
+  // ✅ Get username from userId
+  const getUsername = (userId) => {
+    if (!userId) return "Admin";
+    
+    const user = users[userId];
+    if (user && user.username) {
+      return user.username;
+    }
+    
+    return `User ${userId.substring(0, 8)}...`;
+  };
+
+  // ✅ Get user avatar with first letter as fallback
+  const getUserAvatar = (userId) => {
+    if (!userId) return generateAvatarFromLetter("A");
+    
+    const user = users[userId];
+    if (!user) return generateAvatarFromLetter("U");
+
+    if (user.avatarUrl && 
+        user.avatarUrl.trim() !== "" && 
+        user.avatarUrl !== "null" &&
+        user.avatarUrl !== "undefined") {
+      return user.avatarUrl;
+    }
+
+    const username = user.username || "U";
+    const firstLetter = username.charAt(0).toUpperCase();
+    
+    return generateAvatarFromLetter(firstLetter);
+  };
 
   // ✅ Upload image to Cloudinary
   const uploadToCloudinary = async (file) => {
@@ -52,36 +119,36 @@ const GetAllPosts = () => {
 
   // ✅ Add Post
   const handleAddPost = async () => {
-    if (!newUser.trim() || !newContent.trim()) {
-      setFormError("Please fill all fields");
+    if (!newContent.trim()) {
+      setFormError("Please enter post content");
       setTimeout(() => setFormError(""), 2000);
       return;
     }
 
     try {
       let imageUrl = null;
+      
       if (newImage) {
         imageUrl = await uploadToCloudinary(newImage);
       }
 
       const postDoc = await addDoc(collection(db, "posts"), {
-        user: newUser,
         content: newContent,
-        image: imageUrl,
+        imageUrl: imageUrl,
         createdAt: Date.now(),
+        isPublic: true,
       });
 
       const newPost = {
         id: postDoc.id,
-        user: newUser,
         content: newContent,
-        image: imageUrl,
+        imageUrl: imageUrl,
         createdAt: Date.now(),
+        isPublic: true,
       };
 
       setPosts((prev) => [newPost, ...prev]);
       setShowForm(false);
-      setNewUser("");
       setNewContent("");
       setNewImage(null);
       setMessage("✅ Post added successfully!");
@@ -105,11 +172,26 @@ const GetAllPosts = () => {
     }
   };
 
-  const filteredPosts = posts.filter(
-    (p) =>
-      p.user.toLowerCase().includes(search.toLowerCase()) ||
-      p.content.toLowerCase().includes(search.toLowerCase())
-  );
+  // ✅ Open image in modal
+  const openImageModal = (imageUrl) => {
+    setSelectedImage(imageUrl);
+  };
+
+  // ✅ Close image modal
+  const closeImageModal = () => {
+    setSelectedImage(null);
+  };
+
+  // ✅ Safe filtering
+  const filteredPosts = posts.filter((p) => {
+    const content = p.content || "";
+    const username = getUsername(p.userId) || "";
+    
+    return (
+      content.toLowerCase().includes(search.toLowerCase()) ||
+      username.toLowerCase().includes(search.toLowerCase())
+    );
+  });
 
   const totalPages = Math.ceil(filteredPosts.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -123,7 +205,7 @@ const GetAllPosts = () => {
         <div className="search-bar">
           <input
             type="text"
-            placeholder="Search posts..."
+            placeholder="Search posts or users..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -141,12 +223,6 @@ const GetAllPosts = () => {
         <div className="modal-backdrop">
           <div className="modal-box">
             <h3>Add New Post</h3>
-            <input
-              type="text"
-              placeholder="Username"
-              value={newUser}
-              onChange={(e) => setNewUser(e.target.value)}
-            />
             <textarea
               placeholder="What's on your mind?"
               value={newContent}
@@ -190,13 +266,31 @@ const GetAllPosts = () => {
         </div>
       )}
 
+      {/* Image Preview Modal */}
+      {selectedImage && (
+        <div className="image-modal-backdrop" onClick={closeImageModal}>
+          <div className="image-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="image-modal-close" onClick={closeImageModal}>
+              <FaTimes size={24} />
+            </button>
+            <img src={selectedImage} alt="Full size post" className="image-modal-img" />
+          </div>
+        </div>
+      )}
+
       {/* Posts Grid */}
       <div className="posts-grid">
         {currentPosts.map((post) => (
           <div key={post.id} className="post-card">
-            {post.image && (
-              <div className="image-container">
-                <img src={post.image} alt="Post" />
+            {post.imageUrl && (
+              <div 
+                className="image-container clickable-image"
+                onClick={() => openImageModal(post.imageUrl)}
+              >
+                <img src={post.imageUrl} alt="Post" />
+                <div className="image-overlay">
+                  <span>Click to view full image</span>
+                </div>
               </div>
             )}
 
@@ -205,15 +299,25 @@ const GetAllPosts = () => {
             </button>
 
             <div className="post-info">
-              <h3>{post.user}</h3>
-              <p>{post.content}</p>
+              <div className="post-user">
+                <img 
+                  src={getUserAvatar(post.userId)} 
+                  alt="User" 
+                  className="user-avatar"
+                />
+                <span className="username">
+                  {getUsername(post.userId)}
+                </span>
+              </div>
+              <p>{post.content || "No content"}</p>
             </div>
 
             <div className="post-actions">
               <div className="action">
-                <FaHeart className="icon heart" />
-                <span>likes</span>
+                <FaRegHeart className="icon heart" />
+                <span>Like</span>
               </div>
+              
               <div
                 className="action"
                 onClick={() =>
@@ -223,10 +327,12 @@ const GetAllPosts = () => {
                 }
               >
                 <FaEye className="icon view-icon" title="View Post" />
+                <span>View</span>
               </div>
+              
               <div className="action">
-                <FaComment className="icon" />
-                <span>comments</span>
+                <FaRegComment className="icon" />
+                <span>Comment</span>
               </div>
             </div>
           </div>
@@ -234,7 +340,7 @@ const GetAllPosts = () => {
 
         {filteredPosts.length === 0 && (
           <div className="no-results">
-            <p>No posts or users found</p>
+            <p>No posts found</p>
           </div>
         )}
       </div>

@@ -25,6 +25,7 @@ function Team() {
   const [editMember, setEditMember] = useState(null);
   const [viewMember, setViewMember] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
   const itemsPerPage = 10;
@@ -33,18 +34,66 @@ function Team() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
+        setLoading(true);
         const querySnapshot = await getDocs(collection(db, "users"));
         const usersList = querySnapshot.docs
           .map((doc) => ({ id: doc.id, ...doc.data() }))
           .reverse();
+        
+        console.log("Fetched users:", usersList);
         setTeamData(usersList);
       } catch (error) {
         console.error("Error fetching users:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchUsers();
   }, []);
 
+  // ✅ Get user avatar with default fallback
+  
+  // ✅ Get user avatar with first letter as fallback
+const getUserAvatar = (member) => {
+  // If user has custom avatar, use it
+  if (member.avatarUrl && 
+      member.avatarUrl.trim() !== "" && 
+      member.avatarUrl !== "null" &&
+      member.avatarUrl !== "undefined") {
+    return member.avatarUrl;
+  }
+
+  // Generate avatar with first letter of username
+  const username = member.username || "U";
+  const firstLetter = username.charAt(0).toUpperCase();
+  
+  // Create a colorful avatar with the first letter
+  return generateAvatarFromLetter(firstLetter);
+};
+
+// ✅ Generate avatar with first letter and random color
+const generateAvatarFromLetter = (letter) => {
+  // Array of nice colors for avatars
+  const colors = [
+    '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
+    '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9',
+    '#F8C471', '#82E0AA', '#F1948A', '#85C1E9', '#D7BDE2'
+  ];
+  
+  // Get consistent color based on letter
+  const colorIndex = letter.charCodeAt(0) % colors.length;
+  const backgroundColor = colors[colorIndex];
+  
+  // Create SVG avatar with the letter
+  const svg = `
+    <svg width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+      <rect width="40" height="40" fill="${backgroundColor}" rx="8"/>
+      <text x="20" y="26" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold">${letter}</text>
+    </svg>
+  `;
+  
+  return `data:image/svg+xml;base64,${btoa(svg)}`;
+};
   // Highlight search text
   const highlightText = (text, search) => {
     if (!search || !text) return text;
@@ -52,7 +101,7 @@ function Team() {
     const parts = text.split(regex);
     return parts.map((part, i) =>
       regex.test(part) ? (
-        <span key={i} >
+        <span key={i} className="highlight">
           {part}
         </span>
       ) : (
@@ -61,28 +110,26 @@ function Team() {
     );
   };
 
- // Filter users - CORRECTED VERSION
-const filteredTeam = teamData.filter((member) => {
-  const searchMatch =
-    (member.username?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
-    (member.email?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
-    (member.location?.toLowerCase() || "").includes(searchTerm.toLowerCase());
+  // Filter users
+  const filteredTeam = teamData.filter((member) => {
+    const searchMatch =
+      (member.username?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+      (member.email?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+      (member.location?.toLowerCase() || "").includes(searchTerm.toLowerCase());
 
-  // FIXED: Better status filtering
-  const userStatus = (member.status || "Active").toString().trim().toLowerCase();
-  const filterStatus = selectedStatus.trim().toLowerCase();
-  
-  // If no status filter selected, show all. Otherwise match exactly
-  const statusMatch = selectedStatus === "" || userStatus === filterStatus;
+    const userStatus = (member.status || "Active").toString().trim().toLowerCase();
+    const filterStatus = selectedStatus.trim().toLowerCase();
+    
+    const statusMatch = selectedStatus === "" || userStatus === filterStatus;
 
-  // FIXED: Better date handling
-  const dateMatch =
-    !selectedDate ||
-    (member.dateJoined &&
-      member.dateJoined === selectedDate.toISOString().split('T')[0]); // Use YYYY-MM-DD format
+    const dateMatch =
+      !selectedDate ||
+      (member.dateJoined &&
+        member.dateJoined === selectedDate.toISOString().split('T')[0]);
 
-  return searchMatch && statusMatch && dateMatch;
-});
+    return searchMatch && statusMatch && dateMatch;
+  });
+
   // Pagination
   const totalPages = Math.ceil(filteredTeam.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -113,7 +160,7 @@ const filteredTeam = teamData.filter((member) => {
     }
   };
 
-  // Edit user (no alert)
+  // Edit user
   const handleEditSave = async () => {
     try {
       if (!editMember?.id) return;
@@ -135,14 +182,33 @@ const filteredTeam = teamData.filter((member) => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="dashboard-container">
+        <div className="main-content">
+          <div className="team-page">
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'center', 
+              alignItems: 'center', 
+              height: '200px',
+              fontSize: '18px',
+              color: '#666'
+            }}>
+              Loading users...
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="dashboard-container">
       <div className="main-content">
         <div className="team-page">
           <div className="page-header">
-            <h2 className="page-titlees">
-              Users
-            </h2>
+            <h2 className="page-titlees">Users</h2>
           </div>
 
           {/* Filters */}
@@ -151,7 +217,7 @@ const filteredTeam = teamData.filter((member) => {
               <div className="reports-search-input-wrapper">
                 <input
                   type="text"
-                  placeholder="Search Users..."
+                  placeholder="Search by name, email, or location..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="reports-search-input"
@@ -164,7 +230,7 @@ const filteredTeam = teamData.filter((member) => {
                 <DatePicker
                   selected={selectedDate}
                   onChange={(date) => setSelectedDate(date)}
-                  placeholderText="Select Date"
+                  placeholderText="Join date"
                   className="date-input"
                   wrapperClassName="date-picker-wrapper"
                   dateFormat="yyyy-MM-dd"
@@ -195,7 +261,13 @@ const filteredTeam = teamData.filter((member) => {
           {/* Table */}
           <div className="table-container">
             {filteredTeam.length === 0 ? (
-              <p style={{ textAlign: "center", marginTop: "20px" }}>No results found.</p>
+              <div style={{ textAlign: "center", marginTop: "40px", padding: "20px" }}>
+                <p style={{ fontSize: "16px", color: "#666" }}>
+                  {searchTerm || selectedStatus || selectedDate 
+                    ? "No users match your search criteria." 
+                    : "No users found."}
+                </p>
+              </div>
             ) : (
               <table className="team-table">
                 <thead>
@@ -206,69 +278,82 @@ const filteredTeam = teamData.filter((member) => {
                     <th>Date Joined</th>
                     <th>Status</th>
                     <th>Location</th>
-                    <th></th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {currentTeam.map((member, index) => {
-                    const avatar =
-                      member.photoURL && member.photoURL.trim() !== ""
-                        ? member.photoURL
-                        : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png";
+                  {currentTeam.map((member) => {
+                    const avatar = getUserAvatar(member);
 
                     return (
                       <tr key={member.id}>
                         <td data-label="Member">
                           <div className="user-cell">
-                            <img src={avatar} alt={member.username || "User"} className="user-avatar" />
+                            <img 
+                              src={avatar} 
+                              alt={member.username || "User"} 
+                              className="user-avatar"
+                              onError={(e) => {
+                                // Fallback to default if image fails to load
+                                e.target.src = "assets/profileicon.png";
+                              }}
+                            />
                             <span className="user-name">
                               {highlightText(member.username || "Unnamed", searchTerm)}
                             </span>
                           </div>
                         </td>
-                        <td>{highlightText(member.email || "-", searchTerm)}</td>
-                        <td>{highlightText(member.role || "User", searchTerm)}</td>
-                        <td>{highlightText(member.dateJoined || "-", searchTerm)}</td>
-                        <td>
+                        <td data-label="Email">
+                          {highlightText(member.email || "-", searchTerm)}
+                        </td>
+                        <td data-label="Role">
+                          {highlightText(member.role || "User", searchTerm)}
+                        </td>
+                        <td data-label="Date Joined">
+                          {highlightText(member.dateJoined || "-", searchTerm)}
+                        </td>
+                        <td data-label="Status">
                           <span className={`status-badge ${getStatusClass(member.status)}`}>
                             {member.status || "Active"}
                           </span>
                         </td>
-                        <td>{highlightText(member.location || "-", searchTerm)}</td>
-<td className="team-actions">
-  <div className="team-action-menu">
-    <button
-      className="team-action-btn"
-      onClick={(e) => {
-        e.stopPropagation();
-        setMenuOpen(menuOpen === member.id ? null : member.id);
-      }}
-    >
-      <MoreHorizontal size={16} />
-    </button>
+                        <td data-label="Location">
+                          {highlightText(member.location || "-", searchTerm)}
+                        </td>
+                        <td className="team-actions" data-label="Actions">
+                          <div className="team-action-menu">
+                            <button
+                              className="team-action-btn"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setMenuOpen(menuOpen === member.id ? null : member.id);
+                              }}
+                            >
+                              <MoreHorizontal size={16} />
+                            </button>
 
-    {menuOpen === member.id && (
-      <div className="team-dropdown-menu">
-        <button onClick={() => { setViewMember(member); setMenuOpen(null); }}>
-          <Eye size={14} /> View Profile
-        </button>
-        <button
-          onClick={() =>
-            navigate(`/users/ViewMore/${member.id}`, { state: { user: member } })
-          }
-        >
-          <Eye size={14} /> View More
-        </button>
-        <button onClick={() => { setEditMember(member); setMenuOpen(null); }}>
-          <Edit size={14} /> Edit
-        </button>
-        <button onClick={() => setConfirmDelete(member)}>
-          <Trash2 size={14} /> Remove
-        </button>
-      </div>
-    )}
-  </div>
-</td>
+                            {menuOpen === member.id && (
+                              <div className="team-dropdown-menu">
+                                <button onClick={() => { setViewMember(member); setMenuOpen(null); }}>
+                                  <Eye size={14} /> View Profile
+                                </button>
+                                <button
+                                  onClick={() =>
+                                    navigate(`/users/ViewMore/${member.id}`, { state: { user: member } })
+                                  }
+                                >
+                                  <Eye size={14} /> View More
+                                </button>
+                                <button onClick={() => { setEditMember(member); setMenuOpen(null); }}>
+                                  <Edit size={14} /> Edit
+                                </button>
+                                <button onClick={() => setConfirmDelete(member)}>
+                                  <Trash2 size={14} /> Remove
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        </td>
                       </tr>
                     );
                   })}
@@ -281,7 +366,7 @@ const filteredTeam = teamData.filter((member) => {
           {filteredTeam.length > 0 && (
             <div className="table-footer">
               <div className="showing-info">
-                Showing {Math.min(filteredTeam.length, itemsPerPage)} Entries
+                Showing {startIndex + 1} to {Math.min(startIndex + itemsPerPage, filteredTeam.length)} of {filteredTeam.length} entries
               </div>
               <div className="pagination">
                 <button
@@ -319,18 +404,18 @@ const filteredTeam = teamData.filter((member) => {
           {editMember && (
             <div className="modal-overlay">
               <div className="modal-box">
-                <h3>Edit Member</h3>
+                <h3>Edit User</h3>
                 <input
                   className="edit-input"
                   value={editMember.username || ""}
                   onChange={(e) => setEditMember({ ...editMember, username: e.target.value })}
-                  placeholder="Enter Username"
+                  placeholder="Username"
                 />
                 <input
                   className="edit-input"
                   value={editMember.role || ""}
                   onChange={(e) => setEditMember({ ...editMember, role: e.target.value })}
-                  placeholder="Enter Role"
+                  placeholder="Role"
                 />
                 <select
                   className="edit-input"
@@ -341,12 +426,14 @@ const filteredTeam = teamData.filter((member) => {
                   <option value="Deactive">Deactive</option>
                   <option value="Delete">Delete</option>
                 </select>
-                <button type="button" className="savebtn1" onClick={handleEditSave}>
-                  Save
-                </button>
-                <button className="savebtn2" style={{ marginLeft: "8px" }} onClick={() => setEditMember(null)}>
-                  Cancel
-                </button>
+                <div className="modal-actions">
+                  <button type="button" className="savebtn1" onClick={handleEditSave}>
+                    Save Changes
+                  </button>
+                  <button className="savebtn2" onClick={() => setEditMember(null)}>
+                    Cancel
+                  </button>
+                </div>
               </div>
             </div>
           )}
@@ -357,9 +444,12 @@ const filteredTeam = teamData.filter((member) => {
               <div className="modal-box left-aligned-modal" onClick={(e) => e.stopPropagation()}>
                 <div className="profile-header">
                   <img
-                    src={viewMember.photoURL || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}
+                    src={getUserAvatar(viewMember)}
                     alt={viewMember.username || "User"}
                     className="profile-avatar"
+                    onError={(e) => {
+                      e.target.src = "assets/profileicon.png";
+                    }}
                   />
                   <div>
                     <h3>{viewMember.username || "Unnamed"}</h3>
@@ -373,7 +463,7 @@ const filteredTeam = teamData.filter((member) => {
                   <p><b>Date Joined:</b> {viewMember.dateJoined || "-"}</p>
                   <p><b>Location:</b> {viewMember.location || "-"}</p>
                 </div>
-                <button className="team-close-btn" style={{ marginTop: "12px" }} onClick={() => setViewMember(null)}>
+                <button className="team-close-btn" onClick={() => setViewMember(null)}>
                   Close
                 </button>
               </div>
@@ -384,14 +474,13 @@ const filteredTeam = teamData.filter((member) => {
           {confirmDelete && (
             <div className="modal-overlay">
               <div className="modal-box">
-                <h3>
-                  Are you sure you want to remove <span style={{ fontWeight: "bold" }}>{confirmDelete.username}</span>?
-                </h3>
-                <div style={{ marginTop: "12px" }}>
-                  <button className="savebtn1" style={{ fontWeight: "bold" }} onClick={() => handleRemove(confirmDelete.id)}>
-                    Yes, Remove
+                <h3>Confirm Delete</h3>
+                <p>Are you sure you want to remove <b>{confirmDelete.username}</b>? This action cannot be undone.</p>
+                <div className="modal-actions">
+                  <button className="savebtn1" onClick={() => handleRemove(confirmDelete.id)}>
+                    Yes, Remove User
                   </button>
-                  <button className="savebtn2" style={{ marginLeft: "8px", fontWeight: "bold" }} onClick={() => setConfirmDelete(null)}>
+                  <button className="savebtn2" onClick={() => setConfirmDelete(null)}>
                     Cancel
                   </button>
                 </div>

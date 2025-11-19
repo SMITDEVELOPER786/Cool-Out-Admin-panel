@@ -3,7 +3,7 @@
  * 
  * PURPOSE:
  * - Main admin dashboard displaying platform statistics and quick actions
- * - Shows both mock data (Users, Posts) and real-time Firebase data
+ * - Shows real-time Firebase data for all metrics
  * - Provides navigation to various management sections
  * - Includes notification bell that navigates to reports page
  */
@@ -28,21 +28,30 @@ import { collection, getDocs } from "firebase/firestore";
 const Dashboard = () => {
   const navigate = useNavigate();
 
-  // --- Mock + Real Counts ---
-  const [usersCount] = useState(120);
-  const [postsCount] = useState(80);
+  // --- All Counts from Firebase ---
+  const [usersCount, setUsersCount] = useState(0);
+  const [postsCount, setPostsCount] = useState(0);
   const [quotesCount, setQuotesCount] = useState(0);
   const [videosCount, setVideosCount] = useState(0);
   const [audioCategoriesCount, setAudioCategoriesCount] = useState(0);
   const [affirmationsCount, setAffirmationsCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  // --- Fetch Real Data ---
+  // --- Fetch All Data from Firebase ---
   useEffect(() => {
-    const fetchRealCounts = async () => {
+    const fetchAllCounts = async () => {
       try {
         setLoading(true);
 
+        // Fetch users count
+        const usersSnapshot = await getDocs(collection(db, "users"));
+        setUsersCount(usersSnapshot.size);
+
+        // Fetch posts count - adjust collection name as per your Firebase structure
+        const postsSnapshot = await getDocs(collection(db, "posts")); // or whatever your posts collection is called
+        setPostsCount(postsSnapshot.size);
+
+        // Fetch other counts
         const quotesSnapshot = await getDocs(collection(db, "quotes"));
         setQuotesCount(quotesSnapshot.size);
 
@@ -65,7 +74,7 @@ const Dashboard = () => {
       }
     };
 
-    fetchRealCounts();
+    fetchAllCounts();
   }, []);
 
   if (loading) {
