@@ -32,38 +32,63 @@ function Team() {
 
   // Fetch users from Firebase
   // Fetch users from Firebase
+// Fetch users from Firebase
 useEffect(() => {
   const fetchUsers = async () => {
     try {
       setLoading(true);
       const querySnapshot = await getDocs(collection(db, "users"));
-      const usersList = querySnapshot.docs
-        .map((doc) => { 
-          const userData = doc.data();
-          
-          // Convert createdAt timestamp to dateJoined string
-          let dateJoined = "-";
-          if (userData.createdAt) {
-            // If createdAt is a Firebase timestamp
-            if (userData.createdAt.toDate) {
-              dateJoined = userData.createdAt.toDate().toISOString().split('T')[0];
-            } 
-            // If createdAt is already a string
-            else if (typeof userData.createdAt === 'string') {
-              dateJoined = userData.createdAt.split('T')[0];
-            }
-          }
-          
-          return { 
-            id: doc.id, 
-            ...userData,
-            dateJoined: dateJoined // Add the formatted date
-          };
-        })
-        .reverse();
       
-      console.log("Fetched users:", usersList);
-      setTeamData(usersList);
+      // First, get all user assessments from the top-level collection
+      let allAssessments = [];
+      try {
+        const assessmentsSnapshot = await getDocs(collection(db, "userAssessments"));
+        allAssessments = assessmentsSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        console.log("All assessments:", allAssessments);
+      } catch (assessmentError) {
+        console.error("Error fetching assessments:", assessmentError);
+      }
+      
+      const usersList = querySnapshot.docs.map((doc) => { 
+        const userData = doc.data();
+        
+        // Convert createdAt timestamp to dateJoined string
+        let dateJoined = "-";
+        if (userData.createdAt) {
+          if (userData.createdAt.toDate) {
+            dateJoined = userData.createdAt.toDate().toISOString().split('T')[0];
+          } else if (typeof userData.createdAt === 'string') {
+            dateJoined = userData.createdAt.split('T')[0];
+          }
+        }
+        
+        // Find assessment for this user from the top-level collection
+        let gender = "Not specified";
+        const userAssessment = allAssessments.find(assessment => assessment.userId === doc.id);
+        
+        if (userAssessment && userAssessment.answers && userAssessment.answers.length > 0) {
+          const firstAnswer = userAssessment.answers[0];
+          if (firstAnswer.answer) {
+            gender = firstAnswer.answer;
+            console.log(`Found gender for user ${doc.id}:`, gender);
+          }
+        } else {
+          console.log(`No assessment found for user ${doc.id}`);
+        }
+        
+        return { 
+          id: doc.id, 
+          ...userData,
+          dateJoined: dateJoined,
+          gender: gender
+        };
+      });
+      
+      console.log("Fetched users with gender:", usersList);
+      setTeamData(usersList.reverse());
     } catch (error) {
       console.error("Error fetching users:", error);
     } finally {
