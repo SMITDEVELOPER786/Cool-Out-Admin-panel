@@ -19,18 +19,30 @@ const GetAllPosts = () => {
   const [message, setMessage] = useState(null);
   const [formError, setFormError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedImage, setSelectedImage] = useState(null); // For image modal
+  const [selectedImage, setSelectedImage] = useState(null);
   const itemsPerPage = 9;
 
-  // ✅ Fetch posts AND users from Firestore
+  // ✅ Fetch posts from BOTH collections
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Fetch regular posts
         const postsSnapshot = await getDocs(collection(db, "posts"));
         const postsData = postsSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
+
+        // Fetch admin posts
+        const adminPostsSnapshot = await getDocs(collection(db, "AdminPost"));
+        const adminPostsData = adminPostsSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+          isAdminPost: true, // Mark as admin post
+        }));
+
+        // Combine both collections
+        const allPosts = [...postsData, ...adminPostsData];
 
         const usersSnapshot = await getDocs(collection(db, "users"));
         const usersData = {};
@@ -39,7 +51,7 @@ const GetAllPosts = () => {
         });
 
         setUsers(usersData);
-        setPosts(postsData.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)));
+        setPosts(allPosts.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)));
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -117,7 +129,7 @@ const GetAllPosts = () => {
     return data.secure_url;
   };
 
-  // ✅ Add Post
+  // ✅ Add Post to AdminPost collection
   const handleAddPost = async () => {
     if (!newContent.trim()) {
       setFormError("Please enter post content");
@@ -132,11 +144,13 @@ const GetAllPosts = () => {
         imageUrl = await uploadToCloudinary(newImage);
       }
 
-      const postDoc = await addDoc(collection(db, "posts"), {
+      // ✅ CHANGED: Save to "AdminPost" collection instead of "posts"
+      const postDoc = await addDoc(collection(db, "AdminPost"), {
         content: newContent,
         imageUrl: imageUrl,
         createdAt: Date.now(),
         isPublic: true,
+        isAdminPost: true, // Optional flag to identify admin posts
       });
 
       const newPost = {
@@ -145,24 +159,33 @@ const GetAllPosts = () => {
         imageUrl: imageUrl,
         createdAt: Date.now(),
         isPublic: true,
+        isAdminPost: true, // Optional flag to identify admin posts
       };
 
       setPosts((prev) => [newPost, ...prev]);
       setShowForm(false);
       setNewContent("");
       setNewImage(null);
-      setMessage("✅ Post added successfully!");
+      setMessage("✅ Admin post added successfully!");
       setTimeout(() => setMessage(null), 3000);
     } catch (error) {
-      console.error("Error adding post:", error);
-      setFormError("Error uploading post");
+      console.error("Error adding admin post:", error);
+      setFormError("Error uploading admin post");
     }
   };
 
-  // ✅ Delete Post
+  // ✅ Delete Post - handle both collections
   const confirmDeletePost = async () => {
     try {
-      await deleteDoc(doc(db, "posts", confirmDelete));
+      const postToDelete = posts.find(p => p.id === confirmDelete);
+      
+      // ✅ CHANGED: Delete from correct collection based on post type
+      if (postToDelete?.isAdminPost) {
+        await deleteDoc(doc(db, "AdminPost", confirmDelete));
+      } else {
+        await deleteDoc(doc(db, "posts", confirmDelete));
+      }
+      
       setPosts((prev) => prev.filter((p) => p.id !== confirmDelete));
       setConfirmDelete(null);
       setMessage("🗑️ Post deleted successfully!");
@@ -212,7 +235,7 @@ const GetAllPosts = () => {
         </div>
         <button className="add-post-btn" onClick={() => setShowForm(true)}>
           <FaPlus className="plus-icon" />
-          <span className="add-text">Add Post</span>
+          <span className="add-text">Add Admin Post</span>
         </button>
       </div>
 
@@ -222,7 +245,7 @@ const GetAllPosts = () => {
       {showForm && (
         <div className="modal-backdrop">
           <div className="modal-box">
-            <h3>Add New Post</h3>
+            <h3>Add New Admin Post</h3>
             <textarea
               placeholder="What's on your mind?"
               value={newContent}
@@ -238,7 +261,7 @@ const GetAllPosts = () => {
 
             <div className="modal-actions">
               <button onClick={handleAddPost} className="savebtn1">
-                Post
+                Post as Admin
               </button>
               <button onClick={() => setShowForm(false)} className="savebtn2">
                 Cancel
