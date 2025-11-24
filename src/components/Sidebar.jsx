@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { 
   FaTachometerAlt, FaUserAlt, FaBookOpen, FaQuestionCircle, 
   FaVideo, FaHeadphones, FaChalkboardTeacher, FaBars, FaTimes,
-  FaFeatherAlt, FaPuzzlePiece, FaSignOutAlt, FaFileAlt
+  FaFeatherAlt, FaPuzzlePiece, FaSignOutAlt, FaFileAlt, FaCog
 } from "react-icons/fa";
 
 const Sidebar = () => {
@@ -22,11 +22,12 @@ const Sidebar = () => {
     { to: "/posts", icon: <FaBookOpen />, label: "Posts" },
     { to: "/quotes", icon: <FaFeatherAlt />, label: "Quotes" },
     { to: "/activity", icon: <FaPuzzlePiece />, label: "Activity" },
+    { to: "/management", icon: <FaCog />, label: "Management" }, // ✅ Added Management page
     { to: "/questions", icon: <FaQuestionCircle />, label: "Questions" },
     { to: "/add-video", icon: <FaVideo />, label: "Add Video" },
     { to: "/add-audio", icon: <FaHeadphones />, label: "Add Audio" },
     { to: "/add-lesson", icon: <FaChalkboardTeacher />, label: "Add Lesson" },
-    { to: "/reports", icon: <FaFileAlt />, label: "Reports" }, // ✅ changed icon
+    { to: "/reports", icon: <FaFileAlt />, label: "Reports" },
     { to: "/logout", icon: <FaSignOutAlt />, label: "Logout" },
   ];
 

@@ -23,6 +23,10 @@ import UserPosts from "./pages/UserPosts";
 import Reports from "./pages/reports"
 import ViewMore from "./pages/ViewMore";
 
+// Add this route to your existing routes
+import AdminManagement from "./pages/Management";
+
+// In your Routes component, add:
 
 
 function AppWrapper() {
@@ -213,6 +217,7 @@ function AppWrapper() {
           <Route path="/logout" element={<Logout onLogout={handleLogout} />} />
           <Route path="*" element={<Navigate to="/" />} />
            <Route path="/users/ViewMore/:id" element={<ViewMore />} />
+           <Route path="/management" element={<AdminManagement />} />
           
         </Routes>
       </div>
