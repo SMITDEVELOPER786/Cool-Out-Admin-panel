@@ -19,30 +19,21 @@ const GetAllPosts = () => {
   const [message, setMessage] = useState(null);
   const [formError, setFormError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null); // For image modal
   const itemsPerPage = 9;
 
-  // ✅ Fetch posts from BOTH collections
+
+  const ADMIN_ID = "admin01320";
+
+ 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch regular posts
         const postsSnapshot = await getDocs(collection(db, "posts"));
         const postsData = postsSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-
-        // Fetch admin posts
-        const adminPostsSnapshot = await getDocs(collection(db, "AdminPost"));
-        const adminPostsData = adminPostsSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-          isAdminPost: true, // Mark as admin post
-        }));
-
-        // Combine both collections
-        const allPosts = [...postsData, ...adminPostsData];
 
         const usersSnapshot = await getDocs(collection(db, "users"));
         const usersData = {};
@@ -51,7 +42,7 @@ const GetAllPosts = () => {
         });
 
         setUsers(usersData);
-        setPosts(allPosts.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)));
+        setPosts(postsData.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)));
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -81,21 +72,32 @@ const GetAllPosts = () => {
     return `data:image/svg+xml;base64,${btoa(svg)}`;
   };
 
-  // ✅ Get username from userId
+  // ✅ Get username from userId - IMPROVED VERSION
   const getUsername = (userId) => {
-    if (!userId) return "Admin";
+    if (!userId) return "Unknown User";
+    
+    // Explicit check for admin posts
+    if (userId === ADMIN_ID) {
+      return "Admin";
+    }
     
     const user = users[userId];
     if (user && user.username) {
       return user.username;
     }
     
+    // For regular users that aren't found in users collection
     return `User ${userId.substring(0, 8)}...`;
   };
 
-  // ✅ Get user avatar with first letter as fallback
+  // ✅ Get user avatar with first letter as fallback - IMPROVED VERSION
   const getUserAvatar = (userId) => {
-    if (!userId) return generateAvatarFromLetter("A");
+    if (!userId) return generateAvatarFromLetter("U");
+    
+    // Admin posts get "A" avatar
+    if (userId === ADMIN_ID) {
+      return generateAvatarFromLetter("A");
+    }
     
     const user = users[userId];
     if (!user) return generateAvatarFromLetter("U");
@@ -129,7 +131,7 @@ const GetAllPosts = () => {
     return data.secure_url;
   };
 
-  // ✅ Add Post to AdminPost collection
+  // ✅ Add Post - UPDATED VERSION
   const handleAddPost = async () => {
     if (!newContent.trim()) {
       setFormError("Please enter post content");
@@ -144,13 +146,14 @@ const GetAllPosts = () => {
         imageUrl = await uploadToCloudinary(newImage);
       }
 
-      // ✅ CHANGED: Save to "AdminPost" collection instead of "posts"
-      const postDoc = await addDoc(collection(db, "AdminPost"), {
+      // Create post with admin identifier
+      const postDoc = await addDoc(collection(db, "posts"), {
         content: newContent,
         imageUrl: imageUrl,
         createdAt: Date.now(),
         isPublic: true,
-        isAdminPost: true, // Optional flag to identify admin posts
+        userId: ADMIN_ID, // Explicitly set as admin ID
+        isAdminPost: true // Flag to distinguish admin posts
       });
 
       const newPost = {
@@ -159,33 +162,26 @@ const GetAllPosts = () => {
         imageUrl: imageUrl,
         createdAt: Date.now(),
         isPublic: true,
-        isAdminPost: true, // Optional flag to identify admin posts
+        userId: ADMIN_ID, // Include in local state
+        isAdminPost: true
       };
 
       setPosts((prev) => [newPost, ...prev]);
       setShowForm(false);
       setNewContent("");
       setNewImage(null);
-      setMessage("✅ Admin post added successfully!");
+      setMessage("✅ Post added successfully!");
       setTimeout(() => setMessage(null), 3000);
     } catch (error) {
-      console.error("Error adding admin post:", error);
-      setFormError("Error uploading admin post");
+      console.error("Error adding post:", error);
+      setFormError("Error uploading post");
     }
   };
 
-  // ✅ Delete Post - handle both collections
+  // ✅ Delete Post
   const confirmDeletePost = async () => {
     try {
-      const postToDelete = posts.find(p => p.id === confirmDelete);
-      
-      // ✅ CHANGED: Delete from correct collection based on post type
-      if (postToDelete?.isAdminPost) {
-        await deleteDoc(doc(db, "AdminPost", confirmDelete));
-      } else {
-        await deleteDoc(doc(db, "posts", confirmDelete));
-      }
-      
+      await deleteDoc(doc(db, "posts", confirmDelete));
       setPosts((prev) => prev.filter((p) => p.id !== confirmDelete));
       setConfirmDelete(null);
       setMessage("🗑️ Post deleted successfully!");
@@ -235,7 +231,7 @@ const GetAllPosts = () => {
         </div>
         <button className="add-post-btn" onClick={() => setShowForm(true)}>
           <FaPlus className="plus-icon" />
-          <span className="add-text">Add Admin Post</span>
+          <span className="add-text">Add Post</span>
         </button>
       </div>
 
@@ -245,7 +241,7 @@ const GetAllPosts = () => {
       {showForm && (
         <div className="modal-backdrop">
           <div className="modal-box">
-            <h3>Add New Admin Post</h3>
+            <h3>Add New Post</h3>
             <textarea
               placeholder="What's on your mind?"
               value={newContent}
@@ -261,7 +257,7 @@ const GetAllPosts = () => {
 
             <div className="modal-actions">
               <button onClick={handleAddPost} className="savebtn1">
-                Post as Admin
+                Post
               </button>
               <button onClick={() => setShowForm(false)} className="savebtn2">
                 Cancel
