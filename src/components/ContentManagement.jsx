@@ -43,64 +43,127 @@ const ContentManagement = forwardRef((props, ref) => {
   }, []);
 
   // Load content from Firebase
-  const loadContentFromFirebase = async (docId) => {
-    setLoading(true);
-    try {
-      const docRef = doc(db, "management", docId);
-      const docSnap = await getDoc(docRef);
+  // const loadContentFromFirebase = async (docId) => {
+  //   setLoading(true);
+  //   try {
+  //     const docRef = doc(db, "management", docId);
+  //     const docSnap = await getDoc(docRef);
       
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        console.log("Loaded from Firebase:", data);
+  //     if (docSnap.exists()) {
+  //       const data = docSnap.data();
+  //       console.log("Loaded from Firebase:", data);
         
-        setContent(data.content || "");
-        setOriginalContent(data.content || "");
+  //       setContent(data.content || "");
+  //       setOriginalContent(data.content || "");
         
-        // Handle lastModified timestamp conversion
-        if (data.lastModified) {
-          if (data.lastModified.toDate) {
-            setLastModified(data.lastModified.toDate().toLocaleString());
-          } else if (typeof data.lastModified === 'string') {
-            setLastModified(data.lastModified);
-          } else {
-            setLastModified(new Date().toLocaleString());
-          }
+  //       // Handle lastModified timestamp conversion
+  //       if (data.lastModified) {
+  //         if (data.lastModified.toDate) {
+  //           setLastModified(data.lastModified.toDate().toLocaleString());
+  //         } else if (typeof data.lastModified === 'string') {
+  //           setLastModified(data.lastModified);
+  //         } else {
+  //           setLastModified(new Date().toLocaleString());
+  //         }
+  //       } else {
+  //         setLastModified(new Date().toLocaleString());
+  //       }
+  //     } else {
+  //       // If document doesn't exist, use sample content
+  //       console.log("Document doesn't exist, using sample content");
+  //       const sampleContent = contentSamples[docId] || "";
+  //       setContent(sampleContent);
+  //       setOriginalContent(sampleContent);
+  //       setLastModified(new Date().toLocaleString());
+        
+  //       // Create the document in Firebase
+  //       await setDoc(docRef, {
+  //         content: sampleContent,
+  //         lastModified: new Date().toLocaleString(),
+  //         title: optionLabels[docId],
+  //         fileName: fileNames[docId],
+  //         createdAt: new Date().toISOString()
+  //       });
+        
+  //       showAlert(`${optionLabels[docId]} document created successfully!`, "success");
+  //     }
+  //     setHasUnsavedChanges(false);
+  //   } catch (error) {
+  //     console.error("Error loading content from Firebase:", error);
+  //     // Fallback to sample content
+  //     const sampleContent = contentSamples[docId] || "";
+  //     setContent(sampleContent);
+  //     setOriginalContent(sampleContent);
+  //     setLastModified(new Date().toLocaleString());
+  //     showAlert("Error loading content. Using sample content.", "error");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  // Load content from Firebase
+const loadContentFromFirebase = async (docId) => {
+  setLoading(true);
+  try {
+    const docRef = doc(db, "management", docId);
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      console.log("Loaded from Firebase:", data);
+      
+      // Use ONLY Firebase data when it exists
+      setContent(data.content || "");
+      setOriginalContent(data.content || "");
+      
+      // Handle lastModified timestamp conversion
+      if (data.lastModified) {
+        if (data.lastModified.toDate) {
+          setLastModified(data.lastModified.toDate().toLocaleString());
+        } else if (typeof data.lastModified === 'string') {
+          setLastModified(data.lastModified);
         } else {
           setLastModified(new Date().toLocaleString());
         }
       } else {
-        // If document doesn't exist, use sample content
-        console.log("Document doesn't exist, using sample content");
-        const sampleContent = contentSamples[docId] || "";
-        setContent(sampleContent);
-        setOriginalContent(sampleContent);
         setLastModified(new Date().toLocaleString());
-        
-        // Create the document in Firebase
-        await setDoc(docRef, {
-          content: sampleContent,
-          lastModified: new Date().toLocaleString(),
-          title: optionLabels[docId],
-          fileName: fileNames[docId],
-          createdAt: new Date().toISOString()
-        });
-        
-        showAlert(`${optionLabels[docId]} document created successfully!`, "success");
       }
+      
       setHasUnsavedChanges(false);
-    } catch (error) {
-      console.error("Error loading content from Firebase:", error);
-      // Fallback to sample content
+      return; // IMPORTANT: Return here to prevent fallback to sample content
+    } else {
+      // Only use sample content when Firebase document doesn't exist
+      console.log("Document doesn't exist, using sample content");
       const sampleContent = contentSamples[docId] || "";
       setContent(sampleContent);
       setOriginalContent(sampleContent);
       setLastModified(new Date().toLocaleString());
-      showAlert("Error loading content. Using sample content.", "error");
-    } finally {
-      setLoading(false);
+      
+      // Create the document in Firebase with sample content
+      await setDoc(docRef, {
+        content: sampleContent,
+        lastModified: new Date().toLocaleString(),
+        title: optionLabels[docId],
+        fileName: fileNames[docId],
+        createdAt: new Date().toISOString()
+      });
+      
+      showAlert(`${optionLabels[docId]} document created successfully!`, "success");
+      setHasUnsavedChanges(false);
     }
-  };
-
+  } catch (error) {
+    console.error("Error loading content from Firebase:", error);
+    // Only fallback to sample content on actual errors
+    const sampleContent = contentSamples[docId] || "";
+    setContent(sampleContent);
+    setOriginalContent(sampleContent);
+    setLastModified(new Date().toLocaleString());
+    showAlert("Error loading content. Using sample content.", "error");
+    setHasUnsavedChanges(false);
+  } finally {
+    setLoading(false);
+  }
+};
   // Save content to Firebase
   const saveContentToFirebase = async () => {
     if (!content.trim()) {
@@ -257,33 +320,88 @@ const ContentManagement = forwardRef((props, ref) => {
   };
 
   // Formatting helpers
-  const formatText = (type) => {
-    const textarea = document.querySelector('.content-textarea');
-    if (!textarea) return;
+  // const formatText = (type) => {
+  //   const textarea = document.querySelector('.content-textarea');
+  //   if (!textarea) return;
     
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const selectedText = content.substring(start, end);
+  //   const start = textarea.selectionStart;
+  //   const end = textarea.selectionEnd;
+  //   const selectedText = content.substring(start, end);
     
-    const formats = {
-      bold: `**${selectedText}**`,
-      italic: `_${selectedText}_`,
-      list: `\n- ${selectedText}\n`,
-      link: `[${selectedText}](url)`
-    };
+  //   const formats = {
+  //     bold: `**${selectedText}**`,
+  //     italic: `_${selectedText}_`,
+  //     list: `\n- ${selectedText}\n`,
+  //     link: `[${selectedText}](url)`
+  //   };
 
-    if (formats[type]) {
-      const newContent = content.substring(0, start) + formats[type] + content.substring(end);
-      setContent(newContent);
+  //   if (formats[type]) {
+  //     const newContent = content.substring(0, start) + formats[type] + content.substring(end);
+  //     setContent(newContent);
       
-      setTimeout(() => {
-        textarea.focus();
-        const newPosition = start + formats[type].length;
-        textarea.setSelectionRange(newPosition, newPosition);
-      }, 0);
-    }
+  //     setTimeout(() => {
+  //       textarea.focus();
+  //       const newPosition = start + formats[type].length;
+  //       textarea.setSelectionRange(newPosition, newPosition);
+  //     }, 0);
+  //   }
+  // };
+
+  // Formatting helpers
+const formatText = (type) => {
+  const textarea = document.querySelector('.content-textarea');
+  if (!textarea) return;
+  
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const selectedText = content.substring(start, end);
+  
+  const formats = {
+    bold: `**${selectedText}**`,
+    italic: `_${selectedText}_`,
+    list: selectedText ? `- ${selectedText}` : `- List item`,
+    link: `[${selectedText}](url)`
   };
 
+  if (formats[type]) {
+    let newContent, newPosition;
+    
+    if (type === 'list') {
+      // For lists, handle both selected text and empty selection
+      if (selectedText) {
+        // If text is selected, convert it to a list item
+        newContent = content.substring(0, start) + `- ${selectedText}` + content.substring(end);
+        newPosition = start + selectedText.length + 2; // Position after "- " + selected text
+      } else {
+        // If no text selected, insert a new list item on a new line
+        const currentLineStart = content.lastIndexOf('\n', start) + 1;
+        const currentLine = content.substring(currentLineStart, start);
+        
+        if (currentLine.trim() === '') {
+          // If current line is empty, just add list item
+          newContent = content.substring(0, start) + `- List item` + content.substring(start);
+          newPosition = start + 11; // Position after "- List item"
+        } else {
+          // If current line has content, add new line with list item
+          newContent = content.substring(0, start) + `\n- List item` + content.substring(start);
+          newPosition = start + 12; // Position after "\n- List item"
+        }
+      }
+    } else {
+      // For other formats (bold, italic, link)
+      newContent = content.substring(0, start) + formats[type] + content.substring(end);
+      newPosition = start + formats[type].length;
+    }
+    
+    setContent(newContent);
+    
+    // Update cursor position
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(newPosition, newPosition);
+    }, 0);
+  }
+};
   // Quick actions
   const quickActions = [
     { icon: Bold, action: () => formatText('bold'), label: 'Bold' },
